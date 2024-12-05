@@ -47,12 +47,12 @@
         data() {
             return {
                 isMinimized: false,
-                path:  {dashboard: '/',cliente:'cliente',extrato: '/extrato',
+                path:  {dashboard: '/',configuracao:'/configuracao',cliente:'/cliente',extrato: '/extrato',
                          registro_externo: '/registro_externo',recibo: '/recibo',
                          simulacao: '/simulacao',pendencia: '/pendencia',
                          analise: '/analise', tarefa: '/tarefa'
                         },
-                icons: {cliente:'fluent:people-list-24-filled',dashboard: 'ion:home',
+                icons: {cliente:'fluent:people-list-24-filled',dashboard: 'ion:home',configuracao: 'ion:home',
                 extrato: 'fluent-mdl2:key-phrase-extraction',registro_externo: 'gravity-ui:database-arrow-right',
                 simulacao: 'material-symbols:database-upload-rounded',
                 pendencia: 'ic:outline-pending-actions',analise: 'carbon:analytics',
@@ -61,6 +61,9 @@
                 permissoes: [
                     {
                     modulo:'dashboard',autorizacao: 'crud'
+                    },
+                    {
+                        modulo:'configuracao',autorizacao: 'crud'
                     },
                     {
                         modulo:'cliente',autorizacao: 'crud'

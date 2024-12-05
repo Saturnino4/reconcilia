@@ -113,6 +113,7 @@ class Extrato(models.Model):
     debito = models.DecimalField(max_digits=10, decimal_places=2)
     credito = models.DecimalField(max_digits=10, decimal_places=2)
     saldo = models.DecimalField(max_digits=10, decimal_places=2)
+    subconta_id =      models.ForeignKey('SubConta', on_delete=models.CASCADE, related_name='subcliente_subconta' ,db_column='subconta_id',null=True)
     status = models.CharField(default='ativo', max_length=10)
 
     class Meta:
@@ -130,6 +131,7 @@ class Swift(models.Model):
     reference   = models.TextField(null=True, blank=True)
     amount      = models.DecimalField(max_digits=10, decimal_places=2)
     ma          = models.CharField(max_length=1, choices=[('c', 'Crédito'), ('d', 'Débito')])
+    conta_id =    models.ForeignKey('Conta', on_delete=models.CASCADE, related_name='swift_conta' ,db_column='conta_id',null=True)
     status      = models.CharField(default='ativo', max_length=10)
 
     class Meta:
@@ -138,16 +140,102 @@ class Swift(models.Model):
         verbose_name_plural = 'Swifts'
 
 
-class CobrancaCliente(models.Model):
+class Banco(models.Model):
     id = models.AutoField(primary_key=True)
-    cli_numero = models.CharField(max_length=60)
-    ope = models.CharField(max_length=60)
-    opr = models.CharField(max_length=60)
+    nome = models.CharField(max_length=50)
+    local_id = models.ForeignKey('Local', on_delete=models.CASCADE, related_name='banco_local' ,db_column='local_id',null=True)
     status = models.CharField(default='ativo', max_length=10)
 
     class Meta:
-        db_table = 'cobranca_cliente'
-        verbose_name = 'Cobranças Cliente'
-        verbose_name_plural = 'Cobranças Clientes'
+        db_table = 'banco'
+        verbose_name = 'Banco'
+        verbose_name_plural = 'Bancos'
+
+
+class Local(models.Model):
+    id          = models.AutoField(primary_key=True)
+    pais        = models.CharField(max_length=50)
+    cidade      = models.CharField(max_length=50)
+    descricao   = models.CharField(max_length=50)
+    status      = models.CharField(default='ativo', max_length=10)
+
+    class Meta:
+        db_table = 'local'
+        verbose_name = 'local'
+        verbose_name_plural = 'locais'
+
+
+
+class Moeda(models.Model):
+    id =            models.AutoField(primary_key=True)
+    nome =          models.CharField(max_length=50)
+    sifra =         models.CharField(max_length=50)
+    abreviatura =   models.CharField(max_length=50)
+    status =        models.CharField(default='ativo', max_length=10)
+
+    class Meta:
+        db_table = 'moeda'
+        verbose_name = 'moeda'
+        verbose_name_plural = 'moedas'
+
+
+class Conta(models.Model):
+    id =        models.AutoField(primary_key=True)
+    nome =      models.CharField(max_length=50)
+    banco_id =  models.ForeignKey('banco', on_delete=models.CASCADE, related_name='conta_banco' ,db_column='banco_id',null=True)
+    moeda_id =  models.ForeignKey('moeda', on_delete=models.CASCADE, related_name='conta_moeda' ,db_column='moeda_id',null=True)
+    isnostra =  models.IntegerField(default=0)
+    status =    models.CharField(default='ativo', max_length=10)
+
+    class Meta:
+        db_table = 'conta'
+        verbose_name = 'conta'
+        verbose_name_plural = 'contas'
+
+class SubConta(models.Model):
+    id =            models.AutoField(primary_key=True)
+    nome =          models.CharField(max_length=50)
+    conta_id =      models.ForeignKey('Conta', on_delete=models.CASCADE, related_name='subconta_conta' ,db_column='conta_id',null=True)
+    status =        models.CharField(default='ativo', max_length=10)
+
+    class Meta:
+        db_table =              'subconta'
+        verbose_name =          'sub conta'
+        verbose_name_plural =   'sub contas'
+
+class Nostro_vostro(models.Model):
+    subconta_id =   models.ForeignKey('SubConta', on_delete=models.CASCADE, related_name='nostro_vostro_subconta' ,db_column='subconta_id',null=True)
+    conta_id =      models.ForeignKey('Conta', on_delete=models.CASCADE, related_name='nostro_vostro_conta' ,db_column='conta_id',null=True)
+    status =        models.CharField(default='ativo', max_length=10)
+
+    class Meta:
+        db_table =              'nostro_vostro'
+        verbose_name =          'Nostro Vostro'
+        verbose_name_plural =   'Nostros Vostros'
+
+# class extrato_subconta(models.Model):
+#     subconta_id =   models.ForeignKey('SubConta', on_delete=models.CASCADE, related_name='extrato_subconta_subconta' ,db_column='subconta_id',null=True)
+#     extrato_id =      models.ForeignKey('Extrato', on_delete=models.CASCADE, related_name='extrato_subconta_extrato' ,db_column='extrato_id',null=True)
+#     status =        models.CharField(default='ativo', max_length=10)
+
+#     class Meta:
+#         db_table =              'extrato_subconta'
+#         verbose_name =          'extrato subconta'
+#         verbose_name_plural =   'extratos subcontas'
+
+# class swift_conta(models.Model):
+#     conta_id =      models.ForeignKey('Conta', on_delete=models.CASCADE, related_name='swift_conta_conta' ,db_column='conta_id',null=True)
+#     swift_id =      models.ForeignKey('Swift', on_delete=models.CASCADE, related_name='swift_conta_swift' ,db_column='swift_id',null=True)
+#     status =        models.CharField(default='ativo', max_length=10)
+
+#     class Meta:
+#         db_table =              'swift_conta'
+#         verbose_name =          'swift conta'
+#         verbose_name_plural =   'swifts contas'
+
+
+
+
+
 
         

@@ -54,6 +54,12 @@ const routes = [
     component : () =>  import('@/views/clienteViews.vue'),
   },
   
+  {
+    name: 'configuracao',
+    path: '/configuracao',
+    component : () =>  import('@/views/configuracaoViews.vue'),
+  },
+  
 
   // {
   //   name: 'funcionario',

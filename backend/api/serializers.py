@@ -36,3 +36,23 @@ class RoleSerializer(serializers.ModelSerializer):
         model = Role
         fields = '__all__'
 
+class ContaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Conta
+        fields = '__all__'
+
+class MoedaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Moeda
+        fields = '__all__'
+
+class BancoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Banco
+        fields = '__all__'
+
+class SubContaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubConta
+        fields = '__all__'
+

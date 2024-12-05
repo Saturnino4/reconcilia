@@ -4,3 +4,7 @@ from .historicoViews import *
 from .roleViews import *
 from .utilizadorViews import *
 from .permissaoViews import *
+from .moedaViews import *
+from .bancoViews import *
+from .contaViews import *
+from .subContaViews import *
