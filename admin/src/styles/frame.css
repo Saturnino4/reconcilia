@@ -1,0 +1,57 @@
+.info{
+    padding: .2em;
+    border-radius: .2em;
+}
+
+.shadow{
+    box-shadow: 0px 0px .8em .1em #0002;
+}
+
+
+.info-error{
+    background-color: #ff000f;
+    color: #fff;
+    
+}
+
+.flex{
+    display: flex;
+}
+
+.green{
+    color: #008000bf;
+}
+
+.gap{
+    gap: 1em;
+}
+
+.relative{
+    position: relative;
+}
+
+.flex-col{
+    flex-direction: column;
+}
+
+.rounded{
+    border-radius: .3em;
+}
+
+.s-between{
+    justify-content: space-between;
+}
+
+.j-center{
+    justify-content: center;
+}
+
+.info-new{
+    background-color: #b8b800;
+    color: #fff;
+}
+
+
+.form-container{
+    background-color: var(--secondary) !important;
+}

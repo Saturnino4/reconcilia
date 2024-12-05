@@ -1,0 +1,468 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Roboto:wght@100;300;400;500;700;900&family=Plus+Jakarta+Sans:wght@100;300;400;500;700;900&display=swap');
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+@media screen and (max-width: 720px) {
+    aside{
+        display: none;
+    }
+}
+
+.refresh-icon{
+    height: 3em;
+    width: 3em;
+    color: var(--secondary-2);
+
+    /* position: absolute;
+    top: -1em;
+    right: 1em; */
+    /* border: 1px solid red; */
+    /* background-color: red; */
+}
+
+:root{
+    --primary: #c4c4c4;
+    /* --secondary: #011753; */
+    --secondary_v2: #D92525;
+    --secondary_v2-1: #ae1111;
+    --secondary-2: #013253ec;
+
+    --terciary: #8C1F28;
+
+    /* --primary: #c4c4c4; */
+
+    --white-1: #fff;
+    --white-2: #fff9;
+}
+
+#app{
+    height: 100%;
+}
+
+ul{
+    list-style: none;
+}
+
+a{
+    text-decoration: none;
+    color: var(--white-2);
+}
+button{
+    cursor: pointer;
+    border: none;
+}
+
+body{
+    font-family: arial;
+    height: 100vh;
+    overflow: hidden;
+}
+
+
+body > #app > main{
+    flex: 1;
+    display: flex;
+    gap: .1em;
+    height: 100%;
+    width: 100%;
+}
+body > #app > main > section{
+    width: 100%;
+    background-color: var(--primary);
+    /* background-color: #a1a1a1; */
+}
+
+
+body > #app > main section.main-content{
+    min-height: 90dvh;
+    padding: 1em;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    gap: 1em;
+    align-items: center;
+    
+}
+
+body > #app > main .right-side{
+    overflow-y: auto;
+}
+
+body > #app > main section.main-content section.dados-num{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1em;
+    
+}
+body > #app > main section.main-content section.dados-num .card{
+    width: 14em;
+    height: 5em;
+    background-color: var(--white-1);
+    border-radius: .5em;
+    box-shadow: 0px 0px .8em .1em #0002;
+    
+    position: relative;
+    display: flex;
+    overflow: hidden;
+}
+body > #app > main section.main-content section.dados-num .card .pop{
+    position: absolute;
+    left: 0;
+    top: -5em;
+    width: 100%;
+    height: 100%;
+    background-color: #000e;
+    transition: .5s;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body > #app > main section.main-content section.dados-num .card .pop button{
+    padding: .5em;
+    cursor: pointer;
+    background-color: var(--secondary-2);
+    color: var(--primary);
+    border: none;
+    border-radius: .2em;
+    font-weight: bold;
+    font-size: 12pt;
+    
+}
+body > #app > main section.main-content section.dados-num .card .pop button:hover{
+    transform: scale(1.08);
+    background-color: var(--secondary);
+    color: var(--white-1);
+}
+
+body > #app > main section.main-content section.dados-num .card span:first-child{
+    padding-left: 1em;
+    flex: .7;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: .5em;
+    /* background-color: #2323; */
+}
+
+body > #app > main section.main-content section.dados-num .card span:first-child i{
+    color: #0008;
+    font-style: normal;
+}
+body > #app > main section.main-content section.dados-num .card span:last-child {
+    flex: .3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* width:100%; */
+}
+
+body > #app > main section.main-content section.grafico, section.despesa-crud{
+    position: relative;
+    overflow: hidden;
+    background-color: var(--white-1);
+    padding: 1em;
+    width: 100%;
+    /* height: 10em; */
+    height: 50%;
+    
+}
+section.despesa-crud{
+    /* display: none; */
+}
+
+.btn-form-row{
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+}
+.btn-form-row button{
+    background-color: transparent;
+}
+
+.btn-form-row .icon{
+    font-size: 19pt;
+    cursor: pointer;
+}
+
+body > #app > main section.main-content section.despesa-crud .pop{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background-color: #000e; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--white-1);
+}
+
+body > #app > main section.main-content section.despesa-crud .close-despesa{
+    position: absolute;
+    top: 100%;
+    right: 1em;
+    width: 1.5em;
+    height: 1.5em;
+    font-weight: bold;
+    border-radius: 50%;
+    background-color: rgb(11, 102, 138);
+    color: var(--white-1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+
+    
+}
+body > #app > main section.main-content section.despesa-crud .close-despesa:hover{
+    transform: scale(1.1);
+}
+
+body > #app > main section.main-content section.despesa-crud .pop form{
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+    
+}
+body > #app > main section.main-content section.despesa-crud .pop form input{
+    padding: .3em;
+    padding-left: .5em;
+    font-size: 13pt;
+    border-radius: .3em;
+    outline: none;
+}
+body > #app > main section.main-content section.despesa-crud .pop form select{
+    padding: .3em;
+    font-size: 13pt;
+    text-align: center;
+    outline: none;
+}
+
+body > #app > main section.main-content section.despesa-crud .pop form button{
+    padding: .3em;
+    font-size: 13pt;
+    font-weight: bold;
+    background-color: var(--secondary-2);
+    color: var(--white-2);
+    border: none;
+    box-shadow: 0px 0px .1em .1em #0003;
+    border-radius: .3em;
+    
+
+    
+}
+body > #app > main section.main-content section.despesa-crud .pop form button:hover{
+        background-color: var(--secondary);
+        color: var(--white-1);
+        transform: scale(1.02);
+    }
+
+body > #app > main section.main-content section.despesa-crud h2{
+    text-align: center;
+    margin-bottom: .5em;
+}
+
+
+/* *********************** botao fechar ********************************************************** */
+.close-icon{
+    font-size: 16pt;
+    color: #fff;
+    border-radius: 50%;
+    transition: .3s;
+    cursor: pointer;
+    
+}
+
+.close-icon:hover{
+    box-shadow: 0px 0px .2em .2em rgba(0, 0, 0, 0.185);
+    background-color: red;
+    transform: scale(1.2);
+}
+
+/* *********************** TABELA ********************************************************** */
+
+header.crud-title h2{
+    color: #290e00;
+    text-shadow: 1px 1px 1px #0007;
+}
+
+table.table-1{
+    width: 100%;
+    border-spacing: 0;
+    border-radius: .3em;
+    overflow: hidden;
+    box-shadow: 0px 0px .2em .2em #0003;
+
+    border-collapse: separate;
+     border-spacing: 0 2px;
+}
+
+table.table-1 caption{
+    font-weight: bold;
+    font-size: .7em;
+    padding-bottom: .3em;
+    border-bottom: 1px solid #fff;
+    /* box-shadow: 0px 0px .3em .3em #0004; */
+    border-radius: .3em .3em 0px 0px;
+    background-color: var(--secondary_v2);
+    background-color: #111;
+    color: #fff;
+    padding: .3em;
+    position: relative;
+}
+
+table.table-1 td, th{
+    padding: .1em 1em;
+    font-size: .7em;
+}
+
+table.table-1 th{
+    /* padding: .7em; */
+    font-size: .7em;
+    text-align: left;
+    text-transform: capitalize;
+    /* background-color: #01154bea; */
+    background-color: var(--secondary_v2);
+    background-color: #111;
+    color: var(--white-1);
+}
+table.table-1 th:last-child{
+    text-align: center;
+}
+
+table.table-1 tr:nth-child(even){
+    background-color: #476dd491;
+    background-color: #777;
+}
+table.table-1 tr:nth-child(odd){
+    background-color: #3356b633;
+    background-color: #999;
+}
+
+.options-crud{
+    display: flex;
+    justify-content: space-between;
+    gap: 1em;
+    flex-wrap: wrap;
+    /* height: ; */
+    padding: .3em;
+}
+
+.options-crud > span{
+    display: flex;
+    gap: 1em;
+    flex-wrap: wrap;
+}
+
+.noBackground-button{
+    background-color: transparent;
+}
+
+
+.options-crud button.criar-btn{
+    padding: .5em 1.5em;
+    font-weight: bold;
+    border-radius: .5em;
+    background-color: var(--secondary-2);
+    color: #fff;
+    transition: .3s;
+    display: flex;
+    align-items: center;
+    gap: .5em;
+}
+
+.options-crud button.criar-btn:hover{
+    /* background-color: var(--secondary); */
+    transform: scale(1.01);
+    box-shadow: 0px 0px .2em .2em #0003;
+}
+
+.btn-form-row{
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+}
+.btn-form-row button{
+    background-color: transparent;
+}
+
+.btn-form-row .icon{
+    font-size: 1em;
+    cursor: pointer;
+    
+}
+.btn-form-row .edit{
+    color: #008000;
+    color: #18472ae5;
+}
+.btn-form-row .edit:hover{
+    color: #247c46;
+    transform: scale(1.1);
+    
+}
+
+.btn-form-row .delete{
+    color: #ff000a;
+    color: #970f13be;
+}
+.btn-form-row .delete:hover{
+    color: #d61c22;
+
+}
+
+/* ****************************** MENU ASIDE **************************************** */
+
+body > #app > main aside{
+    padding: 1em;
+    background-color: var(--secondary);
+    background-color: var(--secondary_v2);
+    color: var(--white-2);
+}
+/* body > #app > main aside { */
+
+    body > #app > main aside nav {
+        display: flex;
+        flex-direction: column;
+        /* gap: 2em; */
+    }
+
+body > #app > main aside nav ul{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+    /* background-color: red; */
+}
+
+body > #app > main aside nav ul li{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* background-color: red; */
+}
+
+
+body > #app > main aside nav ul li a{
+    border-bottom: 1px solid transparent;
+    /* padding: .3em; */
+    /* padding-right: 4em; */
+    width: 100%;
+    display: flex;
+}
+
+body > #app > main aside nav ul li a:hover{
+    color: var(--white-1);
+    border-bottom: 1px solid var(--white-2);
+}
+
+
+
