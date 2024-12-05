@@ -50,7 +50,7 @@
 
                     </section>
                     <section v-if="1" style="width:100%;" class="table-wrap2 flex gap s-between">
-                        <MoedaAba :props-data="propsData" v-for="item in 6" />
+                        <MoedaAba :props-data="propsData" />
                     </section>
 
                     <section v-if="0" class="table-wrap flex gap s-between">
@@ -79,7 +79,7 @@
     import axios from 'axios';
     import { BASE_URL, KEY } from '@/config';
     import { mapState } from 'vuex';
-    import CustomTable from '@/components/table.vue';
+    import CustomTable from '@/components/table_lite.vue';
     import { fakeRegistroInterno, fakeExtrato } from '@/db/fakeData';
     import MoedaAba from '@/components/configuracao/moedaAba.vue';
 

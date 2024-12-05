@@ -7,7 +7,7 @@
         </caption>
         <thead>
             <tr>
-                <th v-for="item in tableHeders" :key="item">{{ item }}</th>
+                <th :style="{fontSize: sizeStyle}" v-for="item in tableHeders" :key="item">{{ item }}</th>
                 <th v-if="!noActions">ações</th>
             </tr>
         </thead>
@@ -68,6 +68,10 @@
             type: Boolean,
             default: () => false,
         },
+        size: {
+            type: String,
+            default: () => 'small',
+        },
         itemStatus: {
             type: Object,
             default: () => {
@@ -91,9 +95,20 @@
                 tableHeders: [],
                 noActions: true,
                 activeRow: null,
+                sizeValue: '1em',
                 
            } 
        }, 
+       computed: {
+           sizeStyle(){
+               if(this.size === 'small'){
+                   return '1em'
+                }else if(this.size === 'large'){
+                    return '2em'
+                }
+                return '1.5em'
+              }
+        },
        methods: { 
 
             setTableHeaders(){
@@ -133,6 +148,12 @@
 
 
             statusColoryze(tipo){
+             
+                return {         
+                        fontSize: this.sizeStyle,              
+                        borderBotton: '1px solid black',
+                        marginBotton: '1px'
+                }
                 const refer = tipo.split(' ').pop()
                 if(this.itemStatus.naoFeito.includes(refer)){
                     return {

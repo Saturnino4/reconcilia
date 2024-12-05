@@ -52,7 +52,7 @@
                          simulacao: '/simulacao',pendencia: '/pendencia',
                          analise: '/analise', tarefa: '/tarefa'
                         },
-                icons: {cliente:'fluent:people-list-24-filled',dashboard: 'ion:home',configuracao: 'ion:home',
+                icons: {cliente:'fluent:people-list-24-filled',dashboard: 'ion:home',configuracao: 'solar:settings-bold',
                 extrato: 'fluent-mdl2:key-phrase-extraction',registro_externo: 'gravity-ui:database-arrow-right',
                 simulacao: 'material-symbols:database-upload-rounded',
                 pendencia: 'ic:outline-pending-actions',analise: 'carbon:analytics',
