@@ -34,18 +34,62 @@ urlpatterns = [
     path('role/<int:id>/deletar/', RoleViewsDelete.as_view(), name='role'),
 # -------------------------------- /////////////////////// -------------------------------------------------
 
-    # ********************** GET ROLE ************************
+    # ********************** GET MOEDA ************************
     path('moeda/', MoedaViewsGet.as_view(), name='moeda'),
     path('moeda/<int:id>/', MoedaViewsGet.as_view(), name='moeda'),
 
-    # ********************** POST ROLE ************************
+    # ********************** POST MOEDA ************************
     path('moeda/registrar/', MoedaViewsPost.as_view(), name='moeda'),
 
-    # ********************** PUT ROLE ************************
+    # ********************** PUT MOEDA ************************
     path('moeda/<int:id>/atualizar/', MoedaViewsPut.as_view(), name='moeda'),
 
-    # ********************** DELETE ROLE ************************
+    # ********************** DELETE MOEDA ************************
     path('moeda/<int:id>/deletar/', MoedaViewsDelete.as_view(), name='moeda'),
+# -------------------------------- /////////////////////// -------------------------------------------------
+
+    # ********************** GET LOCALIZACAO ************************
+    path('local/', LocalViewsGet.as_view(), name='local'),
+    path('local/<int:id>/', LocalViewsGet.as_view(), name='local'),
+
+    # ********************** POST LOCALIZACAO ************************
+    path('local/registrar/', LocalViewsPost.as_view(), name='local'),
+
+    # ********************** PUT LOCALIZACAO ************************
+    path('local/<int:id>/atualizar/', LocalViewsPut.as_view(), name='local'),
+
+    # ********************** DELETE LOCALIZACAO ************************
+    path('local/<int:id>/deletar/', LocalViewsDelete.as_view(), name='local'),
+
+# -------------------------------- /////////////////////// -------------------------------------------------
+
+    # ********************** GET BANCO ************************
+    path('banco/', BancoViewsGet.as_view(), name='banco'),
+    path('banco/<int:id>/', BancoViewsGet.as_view(), name='banco'),
+
+    # ********************** POST BANCO ************************
+    path('banco/registrar/', BancoViewsPost.as_view(), name='banco'),
+
+    # ********************** PUT BANCO ************************
+    path('banco/<int:id>/atualizar/', BancoViewsPut.as_view(), name='banco'),
+
+    # ********************** DELETE BANCO ************************
+    path('banco/<int:id>/deletar/', BancoViewsDelete.as_view(), name='banco'),
+
+# -------------------------------- /////////////////////// -------------------------------------------------
+
+    # ********************** GET CONTA ************************
+    path('conta/', ContaViewsGet.as_view(), name='conta'),
+    path('conta/<int:id>/', ContaViewsGet.as_view(), name='conta'),
+
+    # ********************** POST CONTA ************************
+    path('conta/registrar/', ContaViewsPost.as_view(), name='conta'),
+
+    # ********************** PUT CONTA ************************
+    path('conta/<int:id>/atualizar/', ContaViewsPut.as_view(), name='conta'),
+
+    # ********************** DELETE CONTA ************************
+    path('conta/<int:id>/deletar/', ContaViewsDelete.as_view(), name='conta'),
 
 # -------------------------------- /////////////////////// -------------------------------------------------
 

@@ -56,3 +56,7 @@ class SubContaSerializer(serializers.ModelSerializer):
         model = SubConta
         fields = '__all__'
 
+class LocalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Local
+        fields = '__all__'

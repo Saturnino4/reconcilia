@@ -7,7 +7,11 @@
 
 @media screen and (max-width: 720px) {
     aside{
-        display: none;
+        position: absolute;
+        z-index: 20;
+        top: 0;
+        left: 0;
+        /* display: none; */
     }
 }
 
@@ -244,6 +248,11 @@ body > #app > main section.main-content section.despesa-crud .pop form select, .
     font-size: 13pt;
     text-align: center;
     outline: none;
+}
+
+.form1 select{
+    border-radius: .3em;
+    border: none;
 }
 
 body > #app > main section.main-content section.despesa-crud .pop form button, .form1 button{

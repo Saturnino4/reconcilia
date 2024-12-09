@@ -1,7 +1,7 @@
 <template>
     <section class='main-contents'>
          <form class="form1 rounded" @submit.prevent>
-             <p style="opacity: .8;">Conta</p>
+             <p style="opacity: .8;">Banco</p>
              <input type="text" placeholder="nome" v-model="data.nome">
              <select name="local" id="local" v-model="data.local_id" >
                 <option value="0" disabled>-------- Selecione local -----------</option>
@@ -14,7 +14,7 @@
              </span>
          </form>
          <section class="table_section">
-             <CustomTable :tableData="contasData" @returnData="returnData"  />
+             <CustomTable :tableData="bancosData" @returnData="returnData"  />
          </section>
     </section>
  </template>
@@ -35,7 +35,7 @@
          data(){
             return{ 
                  isFormEMpty: true,
-                 current_aba: 'conta',
+                 current_aba: 'banco',
                  data: {
                      nome: '',
                      local_id: 0,
@@ -43,9 +43,9 @@
                  },
  
                  action: 'registrar',
-                 contasData: [],
+                 bancosData: [],
                  localsData: [],
-                 fakeContas: [
+                 fakeBancos: [
                      {nome: 'Dólar', local_id: '$', descricao: 'USD', status: 'ativo'},
                      {nome: 'Euro', local_id: '€', descricao: 'EUR', status: 'ativo'},
                      {nome: 'Libra', local_id: '£', descricao: 'GBP', status: 'ativo'},
@@ -53,7 +53,7 @@
                  ],
  
                  propsData: {
-                     data: this.fakeContas,
+                     data: this.fakeBancos,
                      columns: ['nome', 'Local', 'descricao'],
                  },
  
@@ -98,22 +98,22 @@
              },
  
  
-             async setContasData(){
-                 // console.log("setContasData chamado..............................");
+             async setBancosData(){
+                 // console.log("setBancosData chamado..............................");
                  
                  try {
-                     let contas = await req.fetch('conta/');
-                     // let contas = await axios.get('http://localhost:8000/api/v1/conta/');
-                     console.log("contas do Fetch: ", contas);
+                     let bancos = await req.fetch('banco/');
+                     // let bancos = await axios.get('http://localhost:8000/api/v1/banco/');
+                     console.log("bancos do Fetch: ", bancos);
                      
-                     this.contasData = contas.data;
+                     this.bancosData = bancos.data;
                  } catch (error) {
-                     console.log("Erro ao buscar contas: ", error);
+                     console.log("Erro ao buscar bancos: ", error);
  
                      this.$swal.fire({
                          position: 'bottom-end',
                          icon: 'error',
-                         title: 'Erro ao listas contas!',
+                         title: 'Erro ao listas bancos!',
                          showConfirmButton: false,
                          timer: 2000,
                          toast: true
@@ -121,7 +121,7 @@
                  }
                  
                  
-                 // this.contasData = contas.data;
+                 // this.bancosData = bancos.data;
              },
 
              async getLocais(){
@@ -145,16 +145,16 @@
              async registerData(){
                  console.log("Data to register: ", this.data);
                  try {
-                     let res = await req.create('conta/registrar/', this.data);
+                     let res = await req.create('banco/registrar/', this.data);
                      console.log("Resposta do registro: ", res);
-                     this.setContasData();
+                     this.setBancosData();
                      this.clearForm();
                  } catch (error) {
-                     console.log("Erro ao registrar conta: ", error);
+                     console.log("Erro ao registrar banco: ", error);
                      this.$swal.fire({
                          position: 'bottom-end',
                          icon: 'error',
-                         title: 'Erro ao registrar conta!',
+                         title: 'Erro ao registrar banco!',
                          showConfirmButton: false,
                          timer: 2000,
                          toast: true
@@ -165,16 +165,16 @@
              async editData(){
                  console.log("Data to edit: ", this.data);
                  try {
-                     let res = await req.update(`conta/${this.data?.id??0}/atualizar/`, this.data);
+                     let res = await req.update(`banco/${this.data?.id??0}/atualizar/`, this.data);
                      console.log("Resposta da edição: ", res);
-                     this.setContasData();
+                     this.setBancosData();
                      this.clearForm();
                  } catch (error) {
-                     console.log("Erro ao editar conta: ", error);
+                     console.log("Erro ao editar banco: ", error);
                      this.$swal.fire({
                          position: 'bottom-end',
                          icon: 'error',
-                         title: 'Erro ao editar conta!',
+                         title: 'Erro ao editar banco!',
                          showConfirmButton: false,
                          timer: 2000,
                          toast: true
@@ -193,7 +193,7 @@
          },
  
         created(){
-            this.setContasData();
+            this.setBancosData();
             this.getLocais();
         } 
  

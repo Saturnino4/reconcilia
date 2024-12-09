@@ -1,17 +1,19 @@
 
 import axios from "axios";
 
+// const baseUrl = process.env.VUE_APP_BASE_URL;
+
 export class DBrequests {
   
-    static baseUrl;
+    // static baseUrl;
 
     constructor() {
         this.baseUrl = process.env.VUE_APP_BASE_URL;
     }
 
     async fetch(url) {
-        const response = await axios.get(this.baseUrl + url);
         console.log('BAseURL: ',this.baseUrl);
+        const response = await axios.get(this.baseUrl + url);
         
         return response.data;
     }
@@ -34,6 +36,8 @@ export class DBrequests {
 
 
 }
+
+export const DBrequestsObj = new DBrequests();
 
 
 

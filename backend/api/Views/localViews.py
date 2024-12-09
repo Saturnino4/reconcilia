@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
-from api.models import Moeda
+from api.models import Local
 from rest_framework.views import APIView
-from api.serializers import MoedaSerializer
+from api.serializers import LocalSerializer
 from api.views import ResponseData
 from django.http import Http404
 
@@ -10,7 +10,7 @@ from django.http import Http404
 def getByAnyColumn(request,campo,valor):
     rows = 0
     try:
-        querySet = Moeda.objects.raw(f"SELECT * FROM moeda WHERE {campo} like '{valor}'")
+        querySet = Local.objects.raw(f"SELECT * FROM local WHERE {campo} like '{valor}'")
         data = []
         for item in querySet:
             data.append({
@@ -21,13 +21,13 @@ def getByAnyColumn(request,campo,valor):
             })
             rows += 1
     except:
-        return ResponseData(None, 500, 'Erro ao buscar moeda')
+        return ResponseData(None, 500, 'Erro ao buscar Local')
 
     return ResponseData(data, 200, "Daods retornados com sucesso")
    
 
 
-class MoedaViewsGet(APIView):
+class LocalViewsGet(APIView):
 
 
     def getAll(self, request):
@@ -35,9 +35,9 @@ class MoedaViewsGet(APIView):
         # if 'dia' in request.GET and 'mes' in request.GET and 'ano' in request.GET:
 
         try:
-            querySet = Moeda.objects.all()
+            querySet = Local.objects.all()
             rows = querySet.count()
-            serializer = MoedaSerializer(querySet, many=True)
+            serializer = LocalSerializer(querySet, many=True)
             data = serializer.data
 
             # for item in data:
@@ -46,14 +46,14 @@ class MoedaViewsGet(APIView):
             # data['perfil_nome'] = PerfilSerializer
             if len(data) > 0:
                 status = 200
-                message = 'Moedas encontradas'
+                message = 'Locals encontradas'
             else:
-                message = 'Nenhuma moeda encontrada'
+                message = 'Nenhuma Local encontrada'
                 status = 404
         except Exception as e:
             status = 500
             data = []
-            message = 'Erro ao buscar moedas: ' + str(e)
+            message = 'Erro ao buscar Locals: ' + str(e)
             
         return {'status': status, 'data': data,'message': message, 'rows': rows }
             
@@ -62,24 +62,24 @@ class MoedaViewsGet(APIView):
         
         try:
             try:
-                querySet = get_object_or_404(Moeda, id=id)
-                serializer = MoedaSerializer(querySet)
+                querySet = get_object_or_404(Local, id=id)
+                serializer = LocalSerializer(querySet)
                 data = serializer.data
 
                 if len(data) > 0:
                     status = 200
-                    message = 'Moeda encontrada'
+                    message = 'Local encontrada'
                 else:
-                    message = 'Nenhuma Moeda encontrada'
+                    message = 'Nenhuma Local encontrada'
                     status = 404
             except Http404:
                 status = 404
                 data = []
-                message = 'Moeda não encontrada'
+                message = 'Local não encontrada'
         except Exception as e:
             status = 500
             data = []
-            message = 'Erro ao buscar Moeda: ' + str(e)
+            message = 'Erro ao buscar Local: ' + str(e)
         
         return {'status': status, 'data': data, 'message': message}
 
@@ -108,7 +108,7 @@ class MoedaViewsGet(APIView):
     #     return ResponseData(None, 405, 'Method not allowed')
     
 
-class MoedaViewsPost(APIView):
+class LocalViewsPost(APIView):
 
     # def get(self, request):
     #     return ResponseData(None, 405, 'Method not allowed')
@@ -120,21 +120,21 @@ class MoedaViewsPost(APIView):
         
     def post(self, request):
         try:
-            serializer = MoedaSerializer(data=request.data)
+            serializer = LocalSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 status = 201
-                message = 'Moeda criado com sucesso'
+                message = 'Local criado com sucesso'
             else:
                 status = 400
-                message = 'Erro ao criar moeda: ' + str(serializer.errors)
+                message = 'Erro ao criar Local: ' + str(serializer.errors)
         except Exception as e:
             status = 500
-            message = 'Erro ao criar moeda: ' + str(e)
+            message = 'Erro ao criar Local: ' + str(e)
         
         return ResponseData(None, status, message)
     
-class MoedaViewsPut(APIView):
+class LocalViewsPut(APIView):
         
         # def get(self, request):
         #     return ResponseData(None, 405, 'Method not allowed')
@@ -147,22 +147,22 @@ class MoedaViewsPut(APIView):
             
         def put(self, request,id):
             try:
-                querySet = get_object_or_404(Moeda, id=request.data['id'])
-                serializer = MoedaSerializer(querySet, data=request.data)
+                querySet = get_object_or_404(Local, id=request.data['id'])
+                serializer = LocalSerializer(querySet, data=request.data)
                 if serializer.is_valid():
                     serializer.save()
                     status = 200
-                    message = 'Moeda atualizado com sucesso'
+                    message = 'Local atualizado com sucesso'
                 else:
                     status = 400
-                    message = 'Erro ao atualizar moeda: ' + str(serializer.errors)
+                    message = 'Erro ao atualizar Local: ' + str(serializer.errors)
             except Exception as e:
                 status = 500
-                message = 'Erro ao atualizar moeda: ' + str(e)
+                message = 'Erro ao atualizar Local: ' + str(e)
             
             return ResponseData(None, status, message)
 
-class MoedaViewsDelete(APIView):
+class LocalViewsDelete(APIView):
     # def get(self, request):
     #     return ResponseData(None, 405, 'Method not allowed')
     # def post(self, request):
@@ -172,13 +172,13 @@ class MoedaViewsDelete(APIView):
     
     def delete(self, request,id):
         try:
-            querySet = get_object_or_404(Moeda, id=request.data['id'])
+            querySet = get_object_or_404(Local, id=request.data['id'])
             querySet.delete()
             status = 200
-            message = 'Moeda deletado com sucesso'
+            message = 'Local deletado com sucesso'
         except Exception as e:
             status = 500
-            message = 'Erro ao deletar moeda: ' + str(e)
+            message = 'Erro ao deletar Local: ' + str(e)
         
         return ResponseData(None, status, message)
     

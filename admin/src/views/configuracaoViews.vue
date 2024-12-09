@@ -23,9 +23,10 @@
                     
                     <section class="options-crud">
                         <span>
-                            <div class="abas">Contas</div>
-                            <div class="abas">Bancos</div>
-                            <div class="abas">Moedas</div>
+                            <div @click="setAba('conta')" class="abas">Contas</div>
+                            <div @click="setAba('banco')" class="abas">Bancos</div>
+                            <div @click="setAba('moeda')" class="abas">Moedas</div>
+                            <div @click="setAba('local')" class="abas">Localizações</div>
                         </span>
                         <span>
                             <!-- <div class="abas">Contas</div>
@@ -50,7 +51,13 @@
 
                     </section>
                     <section v-if="1" style="width:100%;" class="table-wrap2 flex gap s-between">
-                        <MoedaAba :props-data="propsData" />
+
+                        <keep-alive>
+
+                            <component :is="current_aba" :propsData="propsData" />
+                        
+                        </keep-alive>
+
                     </section>
 
                     <section v-if="0" class="table-wrap flex gap s-between">
@@ -82,6 +89,9 @@
     import CustomTable from '@/components/table_lite.vue';
     import { fakeRegistroInterno, fakeExtrato } from '@/db/fakeData';
     import MoedaAba from '@/components/configuracao/moedaAba.vue';
+    import BancoAba from '@/components/configuracao/bancoAba.vue';
+    import ContaAba from '@/components/configuracao/contaAba.vue';
+    import LocalAba from '@/components/configuracao/localAba.vue';
 
     export default {
         components:{
@@ -89,11 +99,17 @@
             popUp,
             CustomTable,
             MoedaAba,
+            BancoAba,
+            ContaAba,
+            LocalAba,
 
         },
 
         data() {
             return {
+
+                current_aba: 'MoedaAba',
+
                 status: 0,
                 clientes: [],
                 propsData: {title: '', data: {}, action: '' },
@@ -140,6 +156,27 @@
 
                 this.isSelectRegistro = !this.isSelectRegistro
                 
+            },
+
+            setAba(aba){
+                switch (aba) {
+                    case 'moeda':
+                        this.current_aba = 'MoedaAba';
+                        break;
+                    case 'banco':
+                        this.current_aba = 'BancoAba';
+                        break;
+                    case 'conta':
+                        this.current_aba = 'ContaAba';
+                        break;
+                    case 'local':
+                        this.current_aba = 'LocalAba';
+                        break;
+
+                    default:
+                        break;
+                }
+                // this.current_aba = aba;
             },
             
             handleRegistroReturn(data){

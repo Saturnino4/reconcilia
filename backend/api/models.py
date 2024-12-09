@@ -144,6 +144,7 @@ class Banco(models.Model):
     id = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=50)
     local_id = models.ForeignKey('Local', on_delete=models.CASCADE, related_name='banco_local' ,db_column='local_id',null=True)
+    descricao   = models.TextField(null=True, blank=True)
     status = models.CharField(default='ativo', max_length=10)
 
     class Meta:
@@ -156,7 +157,7 @@ class Local(models.Model):
     id          = models.AutoField(primary_key=True)
     pais        = models.CharField(max_length=50)
     cidade      = models.CharField(max_length=50)
-    descricao   = models.CharField(max_length=50)
+    descricao   = models.TextField(null=True, blank=True)
     status      = models.CharField(default='ativo', max_length=10)
 
     class Meta:
@@ -169,7 +170,7 @@ class Local(models.Model):
 class Moeda(models.Model):
     id =            models.AutoField(primary_key=True)
     nome =          models.CharField(max_length=50)
-    sifra =         models.CharField(max_length=50)
+    cifrao =         models.CharField(max_length=50, null=True)
     abreviatura =   models.CharField(max_length=50)
     status =        models.CharField(default='ativo', max_length=10)
 
