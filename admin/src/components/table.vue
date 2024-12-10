@@ -92,7 +92,7 @@ export default {
         },
         hiddenColumns: {
             type: Array,
-            default: () => ['id'],
+            default: () => ['id','isnostra'],
         },
         itemStatus: {
             type: Object,

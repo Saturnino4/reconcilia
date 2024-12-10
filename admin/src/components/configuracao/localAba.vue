@@ -126,7 +126,7 @@
              async registerData(){
                  console.log("Data to register: ", this.data);
                  try {
-                     let res = await req.create('local/registrar', this.data);
+                     let res = await req.create('local/registrar/', this.data);
                      console.log("Resposta do registro: ", res);
                      this.setLocalsData();
                      this.clearForm();
@@ -183,7 +183,9 @@
  <style scoped>
  
      .form1{
+        /*
          background-color: #41414157;
+         */
          padding: .8em;
      }
  

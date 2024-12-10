@@ -36,6 +36,13 @@ class BancoViewsGet(APIView):
 
         try:
             querySet = Banco.objects.all()
+
+            if 'nostro' in request.GET:
+                if request.GET['nostro'] == '1':
+                    querySet = querySet.filter(isnostra=1)
+                else:
+                    querySet = querySet.filter(isnostra=0)
+
             rows = querySet.count()
             serializer = BancoSerializer(querySet, many=True)
             data = serializer.data

@@ -144,6 +144,7 @@ class Banco(models.Model):
     id = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=50)
     local_id = models.ForeignKey('Local', on_delete=models.CASCADE, related_name='banco_local' ,db_column='local_id',null=True)
+    isnostra =  models.IntegerField(default=0)
     descricao   = models.TextField(null=True, blank=True)
     status = models.CharField(default='ativo', max_length=10)
 
@@ -182,7 +183,7 @@ class Moeda(models.Model):
 
 class Conta(models.Model):
     id =        models.AutoField(primary_key=True)
-    nome =      models.CharField(max_length=50)
+    numero =    models.CharField(max_length=50)
     banco_id =  models.ForeignKey('banco', on_delete=models.CASCADE, related_name='conta_banco' ,db_column='banco_id',null=True)
     moeda_id =  models.ForeignKey('moeda', on_delete=models.CASCADE, related_name='conta_moeda' ,db_column='moeda_id',null=True)
     isnostra =  models.IntegerField(default=0)

@@ -33,6 +33,9 @@
     --secondary_v2: #D92525;
     --secondary_v2-1: #ae1111;
     --secondary-2: #013253ec;
+    --secondary-2-1: #0132537c;
+    --secondary-2-2: #004472ec;
+    --secondary-2-3: #012b475b;
 
     --terciary: #8C1F28;
 
@@ -41,6 +44,8 @@
     --white-1: #fff;
     --white-2: #fff9;
 }
+
+
 
 #app{
     height: 100%;
@@ -223,9 +228,8 @@ body > #app > main section.main-content section.despesa-crud .close-despesa{
     justify-content: center;
     align-items: center;
     z-index: 2;
-
-    
 }
+
 body > #app > main section.main-content section.despesa-crud .close-despesa:hover{
     transform: scale(1.1);
 }
@@ -233,21 +237,34 @@ body > #app > main section.main-content section.despesa-crud .close-despesa:hove
 body > #app > main section.main-content section.despesa-crud .pop form, .form1{
     display: flex;
     flex-direction: column;
-    gap: .5em;
-    
+    gap: .5em;    
 }
-body > #app > main section.main-content section.despesa-crud .pop form input, .form1 input{
+
+body > #app > main section.main-content section.despesa-crud .pop form input, .form1 input, .form1 textarea{
     padding: .3em;
     padding-left: .5em;
     font-size: 13pt;
     border-radius: .3em;
     outline: none;
 }
+
 body > #app > main section.main-content section.despesa-crud .pop form select, .form1 select{
     padding: .3em;
     font-size: 13pt;
-    text-align: center;
+    text-align: start;
     outline: none;
+}
+
+textarea{
+    resize: none;
+    
+    height: 4em;
+    
+}
+textarea::placeholder{
+    color: #0008;
+    font-family: arial;
+    border-radius: .3em;
 }
 
 .form1 select{
@@ -259,8 +276,10 @@ body > #app > main section.main-content section.despesa-crud .pop form button, .
     padding: .3em;
     font-size: 13pt;
     font-weight: bold;
+    padding: .4em 1.3em;
     background-color: var(--secondary-2);
-    color: var(--white-2);
+    background-color: #0009;
+    color: var(--white-1);
     border: none;
     
     /*
@@ -283,6 +302,13 @@ body > #app > main section.main-content section.despesa-crud .pop form button:ho
 .form1 button:hover{
     backdrop-filter: brightness(70%);
     color: #ffff;
+}
+
+.form1{
+    width: 25em;
+    background-color: var(--secondary_v2);
+    background-color: var(--secondary-2-2);
+    color: var(--white-1);
 }
 
 
@@ -484,6 +510,25 @@ body > #app > main aside nav ul li a:hover{
     color: var(--white-1);
     border-bottom: 1px solid var(--white-2);
 }
+
+input:disabled, select:disabled, textarea:disabled{
+    background-color: #ccccccab;
+    color: #fff;
+    border: none;
+}
+
+select:disabled option{
+    color: #fff;
+}
+
+input:disabled::placeholder, select:disabled::placeholder, textarea:disabled::placeholder{
+    color: #fff;
+}
+
+
+
+
+
 
 
 

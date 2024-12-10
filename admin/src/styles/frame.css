@@ -26,6 +26,18 @@
     gap: 1em;
 }
 
+.gap-1{
+    gap: .3em;
+}
+
+.gap-2{
+    gap: 2em;
+}
+
+.gap-3{
+    gap: 3em;
+}
+
 .relative{
     position: relative;
 }
@@ -42,8 +54,12 @@
     justify-content: space-between;
 }
 
-.j-center{
+.s-center{
     justify-content: center;
+}
+
+.a-center{
+    align-items: center;
 }
 
 .info-new{
@@ -54,4 +70,9 @@
 
 .form-container{
     background-color: var(--secondary) !important;
+}
+
+
+.bold{
+    font-weight: bold;
 }

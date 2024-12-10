@@ -180,7 +180,9 @@
 <style scoped>
 
     .form1{
-        background-color: #41414157;
+        /*
+         background-color: #41414157;
+        */
         padding: .8em;
     }
 

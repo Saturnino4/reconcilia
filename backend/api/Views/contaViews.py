@@ -36,6 +36,13 @@ class ContaViewsGet(APIView):
 
         try:
             querySet = Conta.objects.all()
+
+            if 'nostro' in request.GET:
+                if request.GET['nostro'] == '1':
+                    querySet = querySet.filter(isnostra=1)
+                else:
+                    querySet = querySet.filter(isnostra=0)
+
             rows = querySet.count()
             serializer = ContaSerializer(querySet, many=True)
             data = serializer.data
