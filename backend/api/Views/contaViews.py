@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
-from api.models import Conta
+from api.models import Conta, SubConta
 from rest_framework.views import APIView
-from api.serializers import ContaSerializer
+from api.serializers import ContaSerializer, SubContaSerializer
 from api.views import ResponseData
 from django.http import Http404
 
@@ -121,17 +121,58 @@ class ContaViewsPost(APIView):
         
     def put(self, request):
         return ResponseData(None, 405, 'Method not allowed')
-        
-    def post(self, request):
+    
+    def registrarSubConta(self, data):
         try:
-            serializer = ContaSerializer(data=request.data)
+            serializer = SubContaSerializer(data=data)
             if serializer.is_valid():
                 serializer.save()
                 status = 201
-                message = 'Conta criado com sucesso'
+                message = 'SubConta criado com sucesso'
             else:
                 status = 400
-                message = 'Erro ao criar conta: ' + str(serializer.errors)
+                message = 'Erro ao criar SubConta: ' + str(serializer.errors)
+        except Exception as e:
+            status = 500
+            message = 'Erro ao criar SubConta: ' + str(e)
+
+        return {'status': status, 'message': message}
+
+        
+    def post(self, request):
+        try:
+
+            if request.data['isnostra'] == 1:
+                subconta_nome = request.data['subconta_nome']
+                del request.data['subconta_nome']
+                serializer = ContaSerializer(data=request.data)
+                if serializer.is_valid():
+                    conta = serializer.save()
+                    subcontaData = {
+                        'conta_id': conta.id,
+                        'nome': subconta_nome
+                    }
+                    if self.registrarSubConta(subcontaData)['status'] == 201:
+                        status = 201
+                        message = 'Conta e SubConta criados com sucesso'
+                    else:
+                        status = 201
+                        message = 'Conta criado com sucesso, mas houve um erro ao criar a SubConta'
+                        
+                else:
+                    status = 400
+                    message = 'Erro ao criar conta: ' + str(serializer.errors)
+            else:
+                if 'subconta_nome' in request.data:
+                    del request.data['subconta_nome']
+                serializer = ContaSerializer(data=request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    status = 201
+                    message = 'Conta criado com sucesso'
+                else:
+                    status = 400
+                    message = 'Erro ao criar conta: ' + str(serializer.errors)
         except Exception as e:
             status = 500
             message = 'Erro ao criar conta: ' + str(e)
@@ -148,6 +189,23 @@ class ContaViewsPut(APIView):
             
         def post(self, request):
             return ResponseData(None, 405, 'Method not allowed')
+        
+        def editarSubConta(self, data):
+            try:
+                querySet = get_object_or_404(SubConta, conta_id=data['conta_id'])
+                serializer = SubContaSerializer(querySet, data=data)
+                if serializer.is_valid():
+                    serializer.save()
+                    status = 200
+                    message = 'SubConta atualizado com sucesso'
+                else:
+                    status = 400
+                    message = 'Erro ao atualizar SubConta: ' + str(serializer.errors)
+            except Exception as e:
+                status = 500
+                message = 'Erro ao atualizar SubConta: ' + str(e)
+
+            return {'status': status, 'message': message}
             
         def put(self, request):
             try:

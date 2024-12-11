@@ -176,7 +176,7 @@ export default {
         },
 
         formatValue(value, item) {
-            if (typeof value === 'number') {
+            if (typeof value === 'number' && item === 'Banco_id') {
                 return value.toFixed(2); // Exemplo de formatação de números
             }
             if(value === null || value === undefined || value === ''){

@@ -38,6 +38,7 @@ class BancoViewsGet(APIView):
             querySet = Banco.objects.all()
 
             if 'nostro' in request.GET:
+                print(f'Nostro: {request.GET["nostro"]}')
                 if request.GET['nostro'] == '1':
                     querySet = querySet.filter(isnostra=1)
                 else:

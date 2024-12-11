@@ -6,21 +6,21 @@
       <span class="flex gap s-between">
         <span class="flex gap-1">
           <label for="tipo_nostro">Nostro</label>
-          <input type="radio" name="tipo" id="tipo_nostro" :value="true" v-model="isNostro">
+          <input type="radio" name="tipo" id="tipo_nostro" :value="1" v-model="isNostro">
         </span>
         <span class="flex gap-1">
           <label for="tipo_vostro">Vostro</label>
-          <input type="radio" name="tipo" id="tipo_vostro" :value="false" v-model="isNostro">
+          <input type="radio" name="tipo" id="tipo_vostro" :value="0" v-model="isNostro">
         </span>
       </span>
-      <span class="flex s-between a-center" style="width: 100%;">
+      <span v-if="isNostro" class="flex s-between a-center" style="width: 100%;">
         <label for="conta-select">Já tem conta?</label>
         <select style="width:60%" name="conta" id="conta-select" v-model="selectedContaId">
           <option :value="0">---- Selecione conta ----</option>
           <option v-for="conta in contasData" :key="conta.id" :value="conta.id">{{ conta?.numero }}</option>
         </select>
       </span>            
-      <input :disabled="selectedContaId != 0" type="text" placeholder="numero" v-model="data.numero">
+      <input :disabled="selectedContaId != 0" type="number" placeholder="numero" v-model="data.numero">
       <select :disabled="selectedContaId != 0" name="banco" id="banco" v-model="data.banco_id" >
         <option value="0">-------- Selecione banco -----------</option>
         <option v-for="banco in bancosData" :key="banco.id" :value="banco.id">{{ banco?.nome }}</option>
@@ -32,8 +32,10 @@
       <textarea :disabled="selectedContaId != 0" v-model="data.descricao" name="descricao" id="descricao" placeholder="descrição..."></textarea>
       <input  v-if="isNostro" type="text" placeholder="Nome da conta contabilista.." v-model="data.subconta_nome">
       <span class="flex gap s-between">
-        <button v-if="!isFormEMpty" @click="clearForm" style="background-color: #222;">Limpar</button>
+        <button v-if="1" @click="clearForm" style="background-color: #222;">Limpar</button>
+
         <button @click="submitForm">{{ action }}</button>
+
       </span>
     </form>
     <section class="table_section">
@@ -57,7 +59,7 @@
     
     data(){
       return { 
-        isNostro: true,
+        isNostro: 1,
         isFormEMpty: true,
         current_aba: 'conta',
         
@@ -167,9 +169,16 @@
 
       async getBancos(){
         try {
-          let bancos = await req.fetch(`banco/?nostro=${this.isNostro ? 1 : 0}`);
+          let bancos = await req.fetch(`banco/?nostro=${this.isNostro == 1 ? 1 : 0}`);
           console.log("Bancos do Fetch: ", bancos);
           this.bancosData = bancos.data;
+
+          this.bancosData.map(banco => {
+            if (banco.nome && banco.nome.toLowerCase().includes('bcn')) {
+               this.data.banco_id = banco.id;
+            }
+          });
+
         } catch (error) {
           console.log("Erro ao buscar bancos: ", error);
           this.bancosData = [];
@@ -186,12 +195,24 @@
             numero: this.selectedConta.numero,
             subconta_nome: this.selectedConta.subconta_nome,
             banco_id: this.selectedConta.banco_id,
+            banco: await this.getBanco_nome(this.selectedConta.banco_id),
             moeda_id: this.selectedConta.moeda_id,
             descricao: this.selectedConta.descricao,
           }
 
         } catch (error) {
           console.log("Erro ao buscar conta: ", error);
+        }
+      },
+
+      async getBanco_nome(banco_id){
+        try {
+          let banco = await req.fetch(`banco/${banco_id}/`);
+          console.log("Banco do Fetch: ", banco);
+          return banco.data?.nome ?? null;
+        } catch (error) {
+          console.log("Erro ao buscar banco: ", error);
+          return null;
         }
       },
       
@@ -206,17 +227,30 @@
       },
 
       async registerData(){
-        console.log("Data to register: ", this.data);
+        // console.log("Data to register: ", this.data);
         try {
           const finalData = {
             ...this.data,
             isnostra: this.isNostro
           }
 
-          let res = await req.create('conta/registrar/', this.data);
+          // console.log("Final data: ", finalData);
+          // return;
+          
+
+          let res = await req.create('conta/registrar/', finalData);
           console.log("Resposta do registro: ", res);
           this.setContasData();
           this.clearForm();
+
+          this.$swal.fire({
+            position: 'bottom-end',
+            icon: 'success',
+            title: 'Conta registrada com sucesso!',
+            showConfirmButton: false,
+            timer: 2000,
+            toast: true
+          })
         } catch (error) {
           console.log("Erro ao registrar conta: ", error);
           this.$swal.fire({
@@ -260,6 +294,7 @@
           if (newVal == 0) {
             console.log("Desabilitando campos..............................");
             this.clearForm();
+            this.action = 'registrar';
           } else {
             console.log("Habilitando campos..............................");
             this.setSelectedConta(newVal);
@@ -274,6 +309,11 @@
     },
 
     created(){
+      this.setContasData();
+      this.getBancos();
+      this.getMoeda();
+    },
+    activated(){
       this.setContasData();
       this.getBancos();
       this.getMoeda();

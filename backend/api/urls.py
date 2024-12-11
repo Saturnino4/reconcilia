@@ -1,6 +1,7 @@
 from django.urls import path
 from api.Views import *
 from api.views import outOfService
+from api.views import ourData
 
 
 urlpatterns = [
@@ -90,6 +91,15 @@ urlpatterns = [
 
     # ********************** DELETE CONTA ************************
     path('conta/<int:id>/deletar/', ContaViewsDelete.as_view(), name='conta'),
+
+# -------------------------------- /////////////////////// -------------------------------------------------
+
+    # ********************** GET CONTA ************************
+    path('swift/', SwiftView.as_view(), name='swift'),
+
+    path('nostro/', ourData, name='nostro'),
+
+
 
 # -------------------------------- /////////////////////// -------------------------------------------------
 

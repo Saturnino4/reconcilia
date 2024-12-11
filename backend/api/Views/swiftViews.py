@@ -10,7 +10,7 @@ from api.views import ResponseData
 
 class SwiftView(APIView):
 
-    
+
 #*** Calculos ***
 
     # def set
@@ -21,7 +21,7 @@ class SwiftView(APIView):
 
     def getById(self, pk):
         try:
-            swift = Swift.objects.get(pk=pk)
+            swift = Swift.objects.get(id=pk)
             serializer = SwiftSerializer(swift)
             return ResponseData(serializer.data, status.HTTP_200_OK, 'Swift retornada com sucesso')
         except Swift.DoesNotExist:
@@ -44,7 +44,7 @@ class SwiftView(APIView):
         return ResponseData(serializer.errors, status.HTTP_400_BAD_REQUEST, 'Erro ao criar swift')
     
     def put(self, request, pk):
-        swift = Swift.objects.get(pk=pk)
+        swift = Swift.objects.get(id=pk)
         serializer = SwiftSerializer(swift, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -53,7 +53,7 @@ class SwiftView(APIView):
     
     def delete(self, request, pk):
         try:
-            swift = Swift.objects.get(pk=pk)
+            swift = Swift.objects.get(id=pk)
             swift.status = 'deleted'
             swift.save()
             return ResponseData(None, status.HTTP_204_NO_CONTENT, 'Swift deletada com sucesso')
