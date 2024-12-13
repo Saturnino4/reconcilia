@@ -54,7 +54,7 @@
     import { BASE_URL, KEY } from '@/config';
     import { mapState } from 'vuex';
     import CustomTable from '@/components/table.vue';
-    import { fakeExtrato } from '@/db/fakeData';
+    import { fakeExtrato } from '@/services/fakeData';
 
     export default {
         components:{

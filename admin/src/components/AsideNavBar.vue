@@ -41,7 +41,7 @@
 <script>
     
     import { mapMutations, mapActions, mapGetters } from 'vuex';
-    import { fakeEmpresa } from '@/db/fakeData';
+    import { fakeEmpresa } from '@/services/fakeData';
     export default {
         name: 'AsideNavBar',
         data() {

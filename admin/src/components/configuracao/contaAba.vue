@@ -17,7 +17,7 @@
         <label for="conta-select">Já tem conta?</label>
         <select style="width:60%" name="conta" id="conta-select" v-model="selectedContaId">
           <option :value="0">---- Selecione conta ----</option>
-          <option v-for="conta in contasData" :key="conta.id" :value="conta.id">{{ conta?.numero }}</option>
+          <option v-for="conta in contasData" :key="conta.id" :value="conta.id" v-if="conta">{{ conta?.numero }}</option>
         </select>
       </span>            
       <input :disabled="selectedContaId != 0" type="number" placeholder="numero" v-model="data.numero">
@@ -46,7 +46,7 @@
   
 <script>
   import CustomTable from '@/components/table.vue';
-  import { DBrequestsObj as req } from '@/db/requests';
+  import { DBrequestsObj as req } from '@/services/requests';
   
   export default { 
     components: {   

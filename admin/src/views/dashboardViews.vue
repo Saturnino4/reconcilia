@@ -18,7 +18,7 @@
 <script>
     import asideNavBar from '@/components/AsideNavBar.vue';
     import headerNav from '@/components/headerNav.vue';
-    import { fakeEmpresa } from '@/db/fakeData';
+    import { fakeEmpresa } from '@/services/fakeData';
     
     export default {
 

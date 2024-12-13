@@ -19,7 +19,7 @@
 <script>
  
    import CustomTable from '@/components/table.vue';
-   import { DBrequestsObj as req } from '@/db/requests';
+   import { DBrequestsObj as req } from '@/services/requests';
    export default { 
  
         components: {   

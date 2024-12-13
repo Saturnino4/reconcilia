@@ -95,6 +95,21 @@ urlpatterns = [
 # -------------------------------- /////////////////////// -------------------------------------------------
 
     # ********************** GET CONTA ************************
+    path('subconta/', SubContaViewsGet.as_view(), name='subconta'),
+    path('subconta/<int:id>/', SubContaViewsGet.as_view(), name='subconta'),
+
+    # ********************** POST CONTA ************************
+    path('subconta/registrar/', SubContaViewsPost.as_view(), name='subconta'),
+
+    # ********************** PUT CONTA ************************
+    path('subconta/<int:id>/atualizar/', SubContaViewsPut.as_view(), name='subconta'),
+
+    # ********************** DELETE CONTA ************************
+    path('subconta/<int:id>/deletar/', SubContaViewsDelete.as_view(), name='subconta'),
+
+# -------------------------------- /////////////////////// -------------------------------------------------
+
+    # ********************** GET CONTA ************************
     path('swift/', SwiftView.as_view(), name='swift'),
 
     path('nostro/', ourData, name='nostro'),

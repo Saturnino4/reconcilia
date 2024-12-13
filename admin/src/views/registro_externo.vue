@@ -73,7 +73,7 @@
     import { BASE_URL, KEY } from '@/config';
     import { mapState } from 'vuex';
     import CustomTable from '@/components/table.vue';
-    import { fakeRegistroInterno } from '@/db/fakeData';
+    import { fakeRegistroInterno } from '@/services/fakeData';
 
     export default {
         components:{

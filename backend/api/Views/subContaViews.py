@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from api.models import SubConta
+from api.models import SubConta, Conta
 from rest_framework.views import APIView
 from api.serializers import SubContaSerializer
 from api.views import ResponseData
@@ -44,6 +44,8 @@ class SubContaViewsGet(APIView):
             if len(data) > 0:
                 status = 200
                 message = 'SubContas encontrados'
+                for item in data:
+                    item['conta'] = Conta.objects.get(id=item['conta_id']).numero
             else:
                 message = 'Nenhum subSubConta encontrado'
                 status = 404

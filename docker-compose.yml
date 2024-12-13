@@ -1,15 +1,14 @@
-version: '3.8'
-
 services:
   backend:
-    image: python:3.12
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     container_name: django_backend
-    command: bash -c "pip install -r requirements.txt && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./backend:/app
     working_dir: /app
     ports:
-      - "8000:8000"
+      - "11000:8000"
     environment:
       - DEBUG=1
       - DATABASE_NAME=reconcilia
@@ -28,7 +27,7 @@ services:
       - ./admin:/app
     working_dir: /app
     ports:
-      - "8080:8080"
+      - "12000:8080"
     environment:
       - NODE_ENV=development
     depends_on:
@@ -43,14 +42,15 @@ services:
       - POSTGRES_DB=reconcilia
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      
     ports:
-      - "5432:5432"
+      - "5454:5432"
 
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin
     environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@example.com
+      - PGADMIN_DEFAULT_EMAIL=admin@gmail.com
       - PGADMIN_DEFAULT_PASSWORD=admin
     ports:
       - "5050:80"

@@ -14,36 +14,86 @@
                 <section class="">
 
                 </section>
-                <section class="table-container" style="width: 100%;">
-                    <section>
+                <section class="table-container gap" style="width: 100%;">
+                    <!-- <section> 
                         <select name="bank_choice" id="bank_choice" v-model="bank_choice">
                             <option value="bank_1">Banco_1</option>
                             <option value="bank_2">Banco_2</option>
-                            <!-- <option value="3">Banco 3</option> -->
                         </select>
-                    </section>
+                    </section> -->
+                    <span class="flex gap ">
+                        <span class="flex gap-1">
+                          <label for="tipo_nostro">Nostro</label>
+                          <input type="radio" name="tipo" id="tipo_nostro" :value="1" v-model="isNostro">
+                        </span>
+                        <span class="flex gap-1">
+                          <label for="tipo_vostro">Vostro</label>
+                          <input type="radio" name="tipo" id="tipo_vostro" :value="0" v-model="isNostro">
+                        </span>
+                      </span>
                     <section class="options-crud">
                         <span>
-                            <span>
+                            
+                            <!-- <span v-if="0">
                                 <input id="import_reg" style="display: none;" type="file" @change="handleFileUpload('registro')">
                                 <button style="background-color: #333;" @click="triggerFileInput('import_reg')" class="criar-btn">Importar R.Externo</button>
                             </span>
-                            <span>
+                            <span v-if="0">
                                 <input id="import_extr" style="display: none;" type="file" @change="handleFileUpload('extrato')">
                                 <button style="background-color: #333;" @click="triggerFileInput('import_extr')" class="criar-btn">Importar Extrato</button>
-                            </span>
-                            <span v-if="bank_choice == 'bank_2'">
+                            </span> -->
+                        </span>
+                        <span>
+                            <span>
                                 <input id="import_swift" style="display: none;" type="file" @change="handleFileUpload('swift')">
                                 <button style="background-color: #333;" @click="triggerFileInput('import_swift')" class="criar-btn">Importar Swift</button>
+                                <button v-if="0" @click="openPopUp(null,'Registrar')" class="criar-btn">Registrar</button>
                             </span>
                         </span>
-
-                        <span>
-                            <button @click="openPopUp(null,'Registrar')" class="criar-btn">Registrar</button>
-                        </span>
-
+                        
+                        
                     </section>
-                    <section class="table-wrap flex gap s-between">
+                    <form class="flex gap c-black max-w-30" style="width: 22em;" v-if="1">
+                        <span  class="flex gap f_column s-between w-100 " style="padding: 1em;">
+                            
+                            <span class="flex" >
+                                <input v-if="isNostro" class="ped w-100" style="color:#0009;padding:.2em .3em" type="text" value="BCN - Banco Cabo Verdeano de Negócios, S.A." disabled>
+                            </span>
+                            <span class="flex gap" >
+                                <label for="banco-select">banco: </label>
+                                <select v-if="!isNostro" class="w-100"  name="banco" id="banco-select" v-model="selectedbancoId">
+                                  <option :value="0">---- Selecione banco ----</option>
+                                  <option  v-for="banco in bancosData" :key="banco.id" :value="banco.id">{{ banco?.nome }}</option>
+                                </select>
+                            </span>
+
+                            <span class="flex gap" >
+                                <label for="conta-select">Conta: </label>
+                                <select v-if="!isNostro" class="w-100"  name="conta" id="conta-select" v-model="selectedContaId">
+                                  <option :value="0">---- Selecione conta ----</option>
+                                  <option  v-for="conta in contasData" :key="conta.id" :value="conta.id">{{ conta?.numero }}</option>
+                                </select>
+                                <select v-else class="w-100"  name="conta" id="conta-select" v-model="selectedContaId">
+                                    <option :value="0">---- Selecione conta ----</option>
+                                    <option  v-for="conta in subContasData" :key="conta.id" :value="conta.id">{{ conta?.nome +' - '+ conta?.conta }}</option>
+                                </select>
+                            </span>
+                            <span class="flex gap" >
+                                <label for="conta-select">Inicio: </label>
+                                <input type="date" name="inicio" id="">
+                            </span>
+                            <span class="flex gap" >
+                                <label for="conta-select">Fim: </label>
+                                <input type="date" name="fim" :value="getToday()">
+                            </span>
+
+                            <span>
+                                <button class="b_ped">Aplicar</button>
+                            </span>
+                            
+                          </span>
+                        </form>
+                    <section v-if="0" class="table-wrap flex gap s-between">
                         <CustomTable  :tableData="extrato" />
                         <CustomTable  :tableData="registro_externo" />
                         <CustomTable  :tableData="swift_data" />
@@ -66,9 +116,9 @@
     import popUp from '@/components/popUp.vue';
     import axios from 'axios';
     import { BASE_URL, KEY } from '@/config';
-    import { mapState } from 'vuex';
     import CustomTable from '@/components/table_lite.vue';
-    import { fakeExtrato } from '@/db/fakeData';
+    import { fakeExtrato } from '@/services/fakeData';
+    import { DBrequestsObj as req } from '@/services/requests';
     import * as XLSX from 'xlsx';
 
     export default {
@@ -81,12 +131,18 @@
         data() {
             return {
                 status: 0,
+                selectedContaId: 0,
+                selectedbancoId: 0,
                 clientes: [],
+                contasData: [],
+                subContasData: [],
+                bancosData: [],
                 propsData: {title: '', data: {}, action: '' },
                 extrato: [],
                 registro_externo: [],
                 swift_data: [],
                 bank_choice: 'bank_2',
+                isNostro: 1,
             }
         },
 
@@ -105,6 +161,21 @@
 
             getExtrato(){
                 this.extrato = fakeExtrato()
+            },
+
+            getToday() {
+                const today = new Date();
+                const yyyy = today.getFullYear();
+                const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+                const dd = String(today.getDate()).padStart(2, '0');
+                return `${yyyy}-${mm}-${dd}`;
+            },
+                getTodayFormatted() {
+                const today = new Date();
+                const yyyy = today.getFullYear();
+                const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+                const dd = String(today.getDate()).padStart(2, '0');
+                return `${dd}/${mm}/${yyyy}`;
             },
 
             getAllClientes(){
@@ -142,6 +213,68 @@
                 }
 
                 this.$store.state.popUp = {...this.$store.state.popUp, show:true, title: 'Editar Funcionários' }
+            },
+
+            async setContasData(){
+                try {
+                let contas = await req.fetch(`conta/?nostro=0&banco_id=${this.selectedbancoId}`);
+                console.log("contas do Fetch: ", contas);
+                
+                this.contasData = contas.data;
+                // this.customContaData = contas.data;
+
+                } catch (error) {
+                console.log("Erro ao buscar contas: ", error);
+
+                // this.$swal.fire({
+                //     position: 'bottom-end',
+                //     icon: 'error',
+                //     title: 'Erro ao listar contas!',
+                //     showConfirmButton: false,
+                //     timer: 2000,
+                //     toast: true
+                // })
+                }
+            },
+            async setSubContasData(){
+                try {
+                let contas = await req.fetch('subconta/?full=1');
+                console.log("contas do Fetch: ", contas);
+                
+                this.subContasData = contas.data;
+                // this.customContaData = contas.data;
+
+                } catch (error) {
+                console.log("Erro ao buscar contas: ", error);
+
+                // this.$swal.fire({
+                //     position: 'bottom-end',
+                //     icon: 'error',
+                //     title: 'Erro ao listar contas!',
+                //     showConfirmButton: false,
+                //     timer: 2000,
+                //     toast: true
+                // })
+                }
+            },
+
+
+            async getBancos(){
+                try {
+                let bancos = await req.fetch(`banco/?nostro=0`);
+                console.log("Bancos do Fetch: ", bancos);
+                this.bancosData = bancos.data;
+
+                this.bancosData.map(banco => {
+                    if (banco.nome && banco.nome.toLowerCase().includes('bcn')) {
+                    this.data.banco_id = banco.id;
+                    }
+                });
+
+                } catch (error) {
+                console.log("Erro ao buscar bancos: ", error);
+                this.bancosData = [];
+                }
             },
 
             
@@ -197,17 +330,60 @@
             
         },
         created() {
+            this.setContasData()
+            this.setSubContasData()
+            this.getBancos()
             // this.getExtrato()
         },
 
+        activated() {
+            // this.getAllClientes()
+        },
+
         computed:{
-            
+           
         },
 
         watch:{
+
+            isNostro(val){
+                this.selectedContaId = 0
+            },
+
+            selectedbancoId(val){
+                this.setContasData()
+            }
            
         }  
         
         
     }
 </script>
+
+<style scoped>
+
+    form input, form select{
+        padding: .2em .3em;
+        color: #0009;
+        display: flex;
+        width: 100%;
+    }
+
+    form input[type="date"]{
+        display: flex;
+        justify-content: end;
+    }
+
+    form label{
+        min-width: 3em;
+    }
+
+    form button{
+        padding: .3em .5em;
+        color: #fff;
+        background-color: #333;
+        border: none;
+        cursor: pointer;
+    }
+
+</style>

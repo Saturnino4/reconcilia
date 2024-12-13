@@ -37,11 +37,18 @@ class ContaViewsGet(APIView):
         try:
             querySet = Conta.objects.all()
 
+            if 'banco_id' in request.GET:
+                querySet = querySet.filter(banco_id=request.GET['banco_id'])
+
             if 'nostro' in request.GET:
-                if request.GET['nostro'] == '1':
-                    querySet = querySet.filter(isnostra=1)
-                else:
-                    querySet = querySet.filter(isnostra=0)
+                querySet = querySet.filter(isnostra=request.GET['nostro'])
+
+                if 'banco_id' in request.GET:
+                    querySet = querySet.filter(banco_id=request.GET['banco_id'])
+                # if request.GET['nostro'] == '1':
+                #     querySet = querySet.filter(isnostra=1)
+                # else:
+                #     querySet = querySet.filter(isnostra=0)
 
             rows = querySet.count()
             serializer = ContaSerializer(querySet, many=True)

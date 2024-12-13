@@ -87,7 +87,7 @@
     import { BASE_URL, KEY } from '@/config';
     import { mapState } from 'vuex';
     import CustomTable from '@/components/table_lite.vue';
-    import { fakeRegistroInterno, fakeExtrato } from '@/db/fakeData';
+    import { fakeRegistroInterno, fakeExtrato } from '@/services/fakeData';
     import MoedaAba from '@/components/configuracao/moedaAba.vue';
     import BancoAba from '@/components/configuracao/bancoAba.vue';
     import ContaAba from '@/components/configuracao/contaAba.vue';
