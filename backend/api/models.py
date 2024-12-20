@@ -183,7 +183,7 @@ class Moeda(models.Model):
 
 class Conta(models.Model):
     id =        models.AutoField(primary_key=True)
-    numero =    models.CharField(max_length=50)
+    numero =    models.CharField(max_length=50, unique=True)
     banco_id =  models.ForeignKey('banco', on_delete=models.CASCADE, related_name='conta_banco' ,db_column='banco_id',null=True)
     moeda_id =  models.ForeignKey('moeda', on_delete=models.CASCADE, related_name='conta_moeda' ,db_column='moeda_id',null=True)
     isnostra =  models.IntegerField(default=0)

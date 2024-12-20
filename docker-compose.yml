@@ -22,9 +22,10 @@ services:
   admin:
     image: node:20.4
     container_name: vue_admin
-    command: bash -c "yarn install --ignore-engines && yarn serve"
+    command: bash -c "npm install -g yarn && yarn install --ignore-engines && yarn serve"
     volumes:
       - ./admin:/app
+      - /app/node_modules
     working_dir: /app
     ports:
       - "12000:8080"
@@ -52,6 +53,7 @@ services:
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@gmail.com
       - PGADMIN_DEFAULT_PASSWORD=admin
+    
     ports:
       - "5050:80"
     depends_on:

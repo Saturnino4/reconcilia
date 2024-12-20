@@ -53,7 +53,7 @@
                         
                         
                     </section>
-                    <form class="flex gap c-black max-w-30" style="width: 22em;" v-if="1">
+                    <form @submit.prevent class="flex gap c-black max-w-30" style="width: 22em;" v-if="1">
                         <span  class="flex gap f_column s-between w-100 " style="padding: 1em;">
                             
                             <span class="flex" >
@@ -80,23 +80,29 @@
                             </span>
                             <span class="flex gap" >
                                 <label for="conta-select">Inicio: </label>
-                                <input type="date" name="inicio" id="">
+                                <input type="date" name="inicio" v-model="formDatas.data_inicio">
                             </span>
                             <span class="flex gap" >
                                 <label for="conta-select">Fim: </label>
-                                <input type="date" name="fim" :value="getToday()">
+                                <input type="date" name="fim" v-model="formDatas.data_fim" >
+                            </span>
+
+                            <span class="flex">
+                                <label class="flex gap" style="flex: .5;" for="defasamento_inp">Defasamento: </label>
+                                <input style="flex: .9" type="number" name="defasamento" id="defasamento_inp" :value="0" >
                             </span>
 
                             <span>
-                                <button class="b_ped">Aplicar</button>
+                                <button @click="submitForm" :disabled="noChanges" class="b_ped">Aplicar</button>
                             </span>
                             
                           </span>
                         </form>
-                    <section v-if="0" class="table-wrap flex gap s-between">
-                        <CustomTable  :tableData="extrato" />
-                        <CustomTable  :tableData="registro_externo" />
-                        <CustomTable  :tableData="swift_data" />
+                    <section v-if="1" class="table-wrap flex gap s-between">
+                        <CustomTable v-if="1"  
+                        :tableData="extrato" :key="tableKey" />
+                        <!-- <CustomTable  :tableData="registro_externo" /> -->
+                        <CustomTable  :tableData="subContasByNumeroData" /> 
                     </section>
 
                 </section>
@@ -111,12 +117,12 @@
 </template>
 
 <script>
-    
+     
     import ClienteForm from '@/components/clienteForm.vue';
     import popUp from '@/components/popUp.vue';
     import axios from 'axios';
     import { BASE_URL, KEY } from '@/config';
-    import CustomTable from '@/components/table_lite.vue';
+    import CustomTable from '@/components/table.vue';
     import { fakeExtrato } from '@/services/fakeData';
     import { DBrequestsObj as req } from '@/services/requests';
     import * as XLSX from 'xlsx';
@@ -133,9 +139,18 @@
                 status: 0,
                 selectedContaId: 0,
                 selectedbancoId: 0,
+                formDatas: {
+                    banco_id: 0,
+                    conta_id: 0,
+                    data_inicio: '',
+                    data_fim: '',
+                    // data_inicio: '2024-10-10',
+                    // data_fim: '2024-10-12',
+                },
                 clientes: [],
                 contasData: [],
                 subContasData: [],
+                subContasByNumeroData: [],
                 bancosData: [],
                 propsData: {title: '', data: {}, action: '' },
                 extrato: [],
@@ -143,6 +158,8 @@
                 swift_data: [],
                 bank_choice: 'bank_2',
                 isNostro: 1,
+                noChanges: true,
+                show_table: true,
             }
         },
 
@@ -212,13 +229,12 @@
                     
                 }
 
-                this.$store.state.popUp = {...this.$store.state.popUp, show:true, title: 'Editar Funcionários' }
             },
 
             async setContasData(){
                 try {
                 let contas = await req.fetch(`conta/?nostro=0&banco_id=${this.selectedbancoId}`);
-                console.log("contas do Fetch: ", contas);
+                // console.log("contas do Fetch: ", contas);
                 
                 this.contasData = contas.data;
                 // this.customContaData = contas.data;
@@ -236,6 +252,9 @@
                 // })
                 }
             },
+
+            
+
             async setSubContasData(){
                 try {
                 let contas = await req.fetch('subconta/?full=1');
@@ -326,8 +345,135 @@
             },
 
 
+            isValidForm(){
 
-            
+                if(this.selectedContaId === 0){
+                    this.$swal.fire({
+                        position: 'bottom-end',
+                        icon: 'error',
+                        title: 'Selecione uma conta!',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        toast: true
+                    })
+                    return false
+                }
+
+                if(this.formDatas.data_inicio === '' || this.formDatas.data_fim === ''){
+                    this.$swal.fire({
+                        position: 'bottom-end',
+                        icon: 'error',
+                        title: 'Selecione uma data!',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        toast: true
+                    })
+                    return false
+                }
+
+                if(this.formDatas.data_inicio > this.formDatas.data_fim){
+                    this.$swal.fire({
+                        position: 'bottom-end',
+                        icon: 'error',
+                        title: 'Data de inicio não pode ser maior que a data de fim!',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        toast: true
+                    })
+                    return false
+                }
+
+                return true
+
+            },
+
+
+            async submitForm(){
+
+
+                // if(!this.isValidForm()){
+                //     return
+                // }
+                this.show_table = false
+                this.Reconciliar()
+
+                this.noChanges = true
+                
+
+                
+
+
+                // try{
+                //     let previous_formDatas_on_localStorage = JSON.parse(localStorage.getItem('formDatas')) || null
+
+                //     // Se tiver dados anteriores, verefica se é igual ao atual
+                //     if(previous_formDatas_on_localStorage !== null || 0 != 0){
+                //         let isEqual = JSON.stringify(previous_formDatas_on_localStorage) === JSON.stringify(this.formDatas)
+                //         if(isEqual){
+                //             this.noChanges = false
+                //             return
+                //         }else{
+                //             this.noChanges = true
+                //         }
+                //     }
+
+                //     localStorage.setItem('formDatas', JSON.stringify(this.formDatas))
+                //     this.noChanges = true
+                //     this.Reconciliar()
+               
+                // }catch(e){
+                //     console.log('Erro ao salvar dados no localStorage: ',e)
+                // }
+            },
+
+
+            async Reconciliar(){
+                // console.log('Data to send: ',this.formDatas)
+
+                this.show_table = false
+
+                // this.extrato = []
+
+                let finalFormData = {...this.formDatas}
+
+                finalFormData.data_inicio = this.formatedData(finalFormData.data_inicio)
+                finalFormData.data_fim = this.formatedData(finalFormData.data_fim)
+                this.extrato = []
+                try {
+                    let reconciliacao = await req.create(`reconciliacao/?nostro=${this.isNostro}`, finalFormData);
+                    console.log("Reconciliacao do Fetch: ", reconciliacao);
+                    this.extrato = reconciliacao.data;
+                    console.log('Extrato: => ',this.extrato);
+                    
+
+                } catch (error) {
+                console.log("Erro ao buscar reconciliacao: ", error);
+
+                // this.$swal.fire({
+                //     position: 'bottom-end',
+                //     icon: 'error',
+                //     title: 'Erro ao listar contas!',
+                //     showConfirmButton: false,
+                //     timer: 2000,
+                //     toast: true
+                // })
+                }
+            },
+
+            formatedData(data,formato='dd/mm/yyyy'){
+                // data = toString(data)
+                if(data !== null && data !== undefined && data !== ''){
+                    let dia = data.split('-')[2]
+                    let mes = data.split('-')[1]
+                    let ano = data.split('-')[0]
+                    return `${dia}/${mes}/${ano}`
+                }
+                return data
+            },
+
+
+
+             
         },
         created() {
             this.setContasData()
@@ -341,6 +487,9 @@
         },
 
         computed:{
+
+            
+            
            
         },
 
@@ -352,6 +501,13 @@
 
             selectedbancoId(val){
                 this.setContasData()
+            },
+
+            formDatas:{
+                handler(val){
+                    this.noChanges = false
+                },
+                deep: true
             }
            
         }  

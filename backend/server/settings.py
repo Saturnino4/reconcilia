@@ -15,7 +15,7 @@ DEBUG = True
 
 APPEND_SLASH = True
 
-ALLOWED_HOSTS = ['*',"http://localhost:5000","http://127.0.0.1:5000"]
+ALLOWED_HOSTS = ['*',"http://localhost:5000","http://127.0.0.1:5000","0.0.0.0"]
 
 # CORS_ALLOWED_ORIGINS = [
 #     "http://localhost:5000",
@@ -84,6 +84,15 @@ DATABASES = {
         'PASSWORD' : '',
         'HOST' : '127.0.0.1',
         'PORT' : '3306',
+    },
+
+    'default_docker': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DATABASE_NAME', 'reconciliacao'),
+        'USER': os.getenv('DATABASE_USER', 'postgres'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'coding'),
+        'HOST': os.getenv('DATABASE_HOST', 'db'),  # Use 'db' instead of '0.0.0.0'
+        'PORT': os.getenv('DATABASE_PORT', '5432'),
     },
 
     'default': {

@@ -11,3 +11,4 @@ from .bancoViews import *
 from .contaViews import *
 from .subContaViews import *
 from .localViews import *
+from .reconciliacaoViews import *

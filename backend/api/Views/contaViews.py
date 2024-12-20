@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from api.models import Conta, SubConta
+from api.models import Conta, SubConta, Banco
 from rest_framework.views import APIView
 from api.serializers import ContaSerializer, SubContaSerializer
 from api.views import ResponseData
@@ -50,9 +50,25 @@ class ContaViewsGet(APIView):
                 # else:
                 #     querySet = querySet.filter(isnostra=0)
 
+                if 'nocorrspondente' in request.GET:
+                    contasWithOutCorrespondenteQuery = Conta.objects.raw("""
+                        SELECT * FROM conta WHERE id NOT IN (
+                            SELECT conta_id FROM nostro_vostro WHERE subconta_id NOT IN (
+                                SELECT id FROM subconta WHERE nome = 'correspondente'
+                            )
+                        )
+                    """)
+
+                    querySet = querySet.filter(id__in=[item.id for item in contasWithOutCorrespondenteQuery])
+
+
+           
             rows = querySet.count()
             serializer = ContaSerializer(querySet, many=True)
             data = serializer.data
+
+
+
             
             # data['perfil_nome'] = PerfilSerializer
             if len(data) > 0:
@@ -66,7 +82,7 @@ class ContaViewsGet(APIView):
             data = []
             message = 'Erro ao buscar contas: ' + str(e)
             
-        return {'status': status, 'data': data,'message': message, 'rows': rows }
+        return {'status': status, 'data': data,'message': message, 'rows': rows if 'rows' in locals() else 0 }
             
 
     def getById(self, request, id):
@@ -152,23 +168,35 @@ class ContaViewsPost(APIView):
             if request.data['isnostra'] == 1:
                 subconta_nome = request.data['subconta_nome']
                 del request.data['subconta_nome']
-                serializer = ContaSerializer(data=request.data)
-                if serializer.is_valid():
-                    conta = serializer.save()
+                if 'conta_id' in request.GET:
                     subcontaData = {
-                        'conta_id': conta.id,
+                        'conta_id': request.GET['conta_id'],
                         'nome': subconta_nome
                     }
                     if self.registrarSubConta(subcontaData)['status'] == 201:
                         status = 201
-                        message = 'Conta e SubConta criados com sucesso'
+                        message = 'SubConta criado com sucesso'
                     else:
                         status = 201
-                        message = 'Conta criado com sucesso, mas houve um erro ao criar a SubConta'
-                        
-                else:
-                    status = 400
-                    message = 'Erro ao criar conta: ' + str(serializer.errors)
+                        message = 'Houve um erro ao criar a SubConta'
+                else:        
+                    serializer = ContaSerializer(data=request.data)
+                    if serializer.is_valid():
+                        conta = serializer.save()
+                        subcontaData = {
+                            'conta_id': conta.id,
+                            'nome': subconta_nome
+                        }
+                        if self.registrarSubConta(subcontaData)['status'] == 201:
+                            status = 201
+                            message = 'Conta e SubConta criados com sucesso'
+                        else:
+                            status = 201
+                            message = 'Conta criado com sucesso, mas houve um erro ao criar a SubConta'
+                            
+                    else:
+                        status = 400
+                        message = 'Erro ao criar conta: ' + str(serializer.errors)
             else:
                 if 'subconta_nome' in request.data:
                     del request.data['subconta_nome']

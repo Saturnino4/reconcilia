@@ -7,28 +7,28 @@ from django.http import Http404
 
 
 
-def getByAnyColumn(request,campo,valor):
-    rows = 0
-    try:
-        querySet = SubConta.objects.raw(f"SELECT * FROM subSubConta WHERE {campo} like '{valor}'")
-        data = []
-        for item in querySet:
-            data.append({
-                'id': item.id,
-                'nome': item.data,
-                'hora': item.hora,
-                'status': item.status,
-            })
-            rows += 1
-    except:
-        return ResponseData(None, 500, 'Erro ao buscar subSubConta')
-
-    return ResponseData(data, 200, "Daods retornados com sucesso")
-   
-
 
 class SubContaViewsGet(APIView):
 
+
+    def getByAnyColumn(self,request,campo,valor):
+        rows = 0
+        try:
+            querySet = SubConta.objects.raw(f"SELECT * FROM subconta WHERE {campo} like '{valor}' ")
+
+            data = []
+            for item in querySet:
+                data.append({
+                    'id': item.id,
+                    'conta_id': item.conta_id,
+                    'nome': item.nome,
+                    'status': item.status,
+                })
+                rows += 1
+        except Exception as e:
+            return {'data': None,'status': 500,'message': 'Erro ao buscar subconta: ' + str(e), 'rows': 0}
+
+        return {'status': 200, 'data': data, 'message': 'SubConta encontrado', 'rows': rows}
 
     def getAll(self, request):
 
@@ -82,7 +82,29 @@ class SubContaViewsGet(APIView):
         
         return {'status': status, 'data': data, 'message': message}
 
+
     def get(self, request, id=None):
+
+        if 'numero' in request.GET:
+            try:
+                # querySet = SubConta.objects.raw(f"SELECT * FROM subconta WHERE conta_id = (SELECT id FROM conta WHERE numero = '{request.GET['numero']}') ")
+                querySet = SubConta.objects.raw("""SELECT subconta.id, subconta.nome, conta.numero as numero FROM subconta 
+                                                  left join conta on conta.id = subconta.conta_id
+                                                  where conta.numero = %s""", [request.GET['numero']])
+                data = []
+                for item in querySet:
+                    data.append({
+                        'id': item.id,
+                        # 'conta_id': item.conta_id,
+                        'numero': item.numero,
+                        'nome': item.nome,
+                        'status': item.status,
+                    })
+                    
+                return ResponseData(data, 200, 'SubConta encontrado')
+            except Exception as e:
+                return ResponseData(None, 500, 'Erro ao buscar subconta: ' + str(e))
+        
 
         if id is not None: 
             res = self.getById(request, id)

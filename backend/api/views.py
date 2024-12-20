@@ -45,9 +45,10 @@ def ResponseError(message, status=500):
     return JsonResponse(data, status=status, safe=False )
 
 
-def ourData(request):
+def ourData(request,data_only=False):
     data = [
         {
+            # "id": 1,
             "data_mov": "10/10/2024",
             "da_ccb": "123456-7",
             "documento": "123456",
@@ -57,6 +58,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 2,
             "data_mov": "10/10/2024",
             "da_ccb": "123456-7",
             "documento": "111222",
@@ -66,6 +68,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 3,
             "data_mov": "10/10/2024",
             "da_ccb": "123456-7",
             "documento": "333444",
@@ -75,6 +78,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 4,
             "data_mov": "10/10/2024",
             "da_ccb": "123456-7",
             "documento": "556699",
@@ -84,6 +88,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 5,
             "data_mov": "12/10/2024",
             "da_ccb": "123457-9",
             "documento": "878787",
@@ -93,6 +98,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 6,
             "data_mov": "12/10/2024",
             "da_ccb": "123457-9",
             "documento": "656565",
@@ -102,6 +108,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 7,
             "data_mov": "12/10/2024",
             "da_ccb": "123457-9",
             "documento": "747474",
@@ -111,6 +118,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 8,
             "data_mov": "12/10/2024",
             "da_ccb": "123457-9",
             "documento": "959595",
@@ -120,6 +128,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 9,
             "data_mov": "15/10/2024",
             "da_ccb": "123456-8",
             "documento": "454543",
@@ -129,6 +138,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 10,
             "data_mov": "15/10/2024",
             "da_ccb": "123456-8",
             "documento": "998889",
@@ -138,6 +148,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 11,
             "data_mov": "15/10/2024",
             "da_ccb": "123456-8",
             "documento": "776776",
@@ -147,6 +158,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 12,
             "data_mov": "15/10/2024",
             "da_ccb": "123456-8",
             "documento": "665645",
@@ -156,6 +168,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 13,
             "data_mov": "16/10/2024",
             "da_ccb": "123456-0",
             "documento": "546534",
@@ -165,6 +178,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 14,
             "data_mov": "16/10/2024",
             "da_ccb": "123456-0",
             "documento": "212322",
@@ -174,6 +188,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 15,
             "data_mov": "16/10/2024",
             "da_ccb": "123456-0",
             "documento": "90909",
@@ -183,6 +198,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 16,
             "data_mov": "16/10/2024",
             "da_ccb": "123456-0",
             "documento": "99098",
@@ -192,6 +208,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 17,
             "data_mov": "18/10/2024",
             "da_ccb": "123456-2",
             "documento": "543211",
@@ -201,6 +218,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 18,
             "data_mov": "18/10/2024",
             "da_ccb": "123456-2",
             "documento": "444444",
@@ -210,6 +228,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 19,
             "data_mov": "18/10/2024",
             "da_ccb": "123456-2",
             "documento": "333333",
@@ -219,6 +238,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 20,
             "data_mov": "18/10/2024",
             "da_ccb": "123456-2",
             "documento": "666666",
@@ -228,6 +248,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 21,
             "data_mov": "22/10/2024",
             "da_ccb": "123456-1",
             "documento": "567865",
@@ -237,6 +258,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 22,
             "data_mov": "22/10/2024",
             "da_ccb": "123456-1",
             "documento": "222332",
@@ -246,6 +268,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 23,
             "data_mov": "22/10/2024",
             "da_ccb": "123456-1",
             "documento": "332345",
@@ -255,6 +278,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 24,
             "data_mov": "22/10/2024",
             "da_ccb": "123456-1",
             "documento": "665547",
@@ -264,6 +288,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 25,
             "data_mov": "28/10/2024",
             "da_ccb": "123456-1",
             "documento": "555433",
@@ -273,6 +298,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 26,
             "data_mov": "28/10/2024",
             "da_ccb": "123456-1",
             "documento": "890633",
@@ -282,6 +308,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 27,
             "data_mov": "28/10/2024",
             "da_ccb": "123456-1",
             "documento": "334245",
@@ -291,6 +318,7 @@ def ourData(request):
             "saldo_pos": 12000
         },
         {
+            # "id": 28,
             "data_mov": "28/10/2024",
             "da_ccb": "123456-1",
             "documento": "766589",
@@ -301,5 +329,80 @@ def ourData(request):
         }
     ]
 
+    if data_only:
+        return data
     return ResponseData(data, 200, 'Data found', len(data))
 
+
+def extratoData(request, data_only=False):
+    data = [
+        {
+            "id": 1,
+            "data": "10/10/2024",
+            "value":  241009,
+            "entr": 1009,
+            "F": None,
+            "code": "NTRF",
+            "reference": "57318825/OPE 1896356960DBNJ45 9001ORD.P.REC.9635696004DBNJ45",
+            "amount": 4771.00,
+            "ma": "D",
+        },
+        {
+            "id": 2,
+            "data": "10/10/2024",
+            "value":  241009,
+            "entr": 1009,
+            "F": None,
+            "code": "NTRF",
+            "reference": "ORD.P.EMI 9635696002DBNJ51 9001N.REF: 9635696002DBNJ51",
+            "amount": 4771.00,
+            "ma": "D",
+        },
+        {
+            "id": 3,
+            "data": "10/10/2024",
+            "value":  241009,
+            "entr": 1009,
+            "F": None,
+            "code": "NTRF",
+            "reference": "57325510/OPE 1896356960DBNJ52 9001ORD.P.REC.9635696004DBNJ52",
+            "amount": 4771.00,
+            "ma": "C",
+        },
+        {
+            "id": 4,
+            "data": "10/10/2024",
+            "value":  241009,
+            "entr": 1009,
+            "F": None,
+            "code": "NTRF",
+            "reference": "ORD.P.EMI. 9635696002DBNJ58 9001N.REF: 9635696002DBNJ58",
+            "amount": 4771.00,
+            "ma": "C",
+        },
+        {
+            "id": 5,
+            "data": "10/10/2024",
+            "value":  241009,
+            "entr": 1009,
+            "F": None,
+            "code": "NTRF",
+            "reference": "57325510/OPE 1896356960DBNJ59 9001ORD.P.REC.9635696004DBNJ59",
+            "amount": 4771.00,
+            "ma": "D",
+        },
+        {
+            "id": 6,
+            "data": "10/10/2024",
+            "value":  241009,
+            "entr": 1009,
+            "F": None,
+            "code": "NTRF",
+            "reference": "ORD.P.EMI. 9635696002DBNJ60 9001N.REF: 9635696002DBNJ60",
+            "amount": 4771.00,
+            "ma": "D",
+        }
+
+    ]
+
+    return ResponseData(data, 200, 'Data found', len(data))

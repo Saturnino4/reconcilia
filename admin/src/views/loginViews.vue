@@ -10,7 +10,7 @@
                 <!-- <h1>D'Bella Beauty</h1> -->
             </span>
             <form>
-                <h2>Autentificação</h2>
+                <h2>Autentification</h2>
                 <!-- <label for="">username:</label> -->
                 <input @change="validForm" v-model="usernameValue"
                 :style="{border: usernameValue.length < 4 && tryLogin ? '1px solid red' : 'none'}"

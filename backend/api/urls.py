@@ -118,6 +118,8 @@ urlpatterns = [
 
 # -------------------------------- /////////////////////// -------------------------------------------------
 
+    path('reconciliacao/', ReconciliacaoView.as_view(), name='reconciliacao'),
+    
    
 
 
