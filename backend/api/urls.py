@@ -111,6 +111,7 @@ urlpatterns = [
 
     # ********************** GET CONTA ************************
     path('swift/', SwiftView.as_view(), name='swift'),
+    path('swift/<int:id>/', SwiftView.as_view(), name='swift'),
 
     path('nostro/', ourData, name='nostro'),
 

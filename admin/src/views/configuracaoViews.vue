@@ -315,7 +315,6 @@
                     
                 }
 
-                this.$store.state.popUp = {...this.$store.state.popUp, show:true, title: 'Editar Funcionários' }
             },
 
             deleteRegister(id){

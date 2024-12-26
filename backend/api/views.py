@@ -52,7 +52,7 @@ def ourData(request,data_only=False):
             "data_mov": "10/10/2024",
             "da_ccb": "123456-7",
             "documento": "123456",
-            "tipo_movimento": "OPR ref. 131325",
+            "tipo_movimento": "OPR ref. 9635696002DBNJ51",
             "debito": 4560,
             "credito": 0,
             "saldo_pos": 12000
@@ -62,7 +62,7 @@ def ourData(request,data_only=False):
             "data_mov": "10/10/2024",
             "da_ccb": "123456-7",
             "documento": "111222",
-            "tipo_movimento": "TAXA APLICADA ref. 131325",
+            "tipo_movimento": "TAXA APLICADA ref. 9635696004DBNJ52",
             "debito": 9,
             "credito": 0,
             "saldo_pos": 12000
@@ -72,7 +72,7 @@ def ourData(request,data_only=False):
             "data_mov": "10/10/2024",
             "da_ccb": "123456-7",
             "documento": "333444",
-            "tipo_movimento": "TAXA APLICADA ref. 131325",
+            "tipo_movimento": "TAXA APLICADA ref. 9635696004DBNJ45",
             "debito": 9,
             "credito": 0,
             "saldo_pos": 12000
@@ -405,4 +405,9 @@ def extratoData(request, data_only=False):
 
     ]
 
+    if data_only:
+        return data
+
     return ResponseData(data, 200, 'Data found', len(data))
+
+

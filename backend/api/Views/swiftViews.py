@@ -29,14 +29,28 @@ class SwiftView(APIView):
 
     def get(self, request, id=None):
 
-        if 'id' is not None:
+        if id is not None:
             return self.getById(id)
 
         swifts = Swift.objects.all()
         serializer = SwiftSerializer(swifts, many=True)
         return ResponseData(serializer.data,status.HTTP_200_OK, 'Swifts retornadas com sucesso')
 
+
     def post(self, request):
+
+        bought_data = request.data
+
+        if type(bought_data) == list:
+            for data in bought_data:
+                serializer = SwiftSerializer(data=data)
+                if serializer.is_valid():
+                    serializer.save()
+                else:
+                    return ResponseData(serializer.errors, status.HTTP_400_BAD_REQUEST, 'Erro ao criar swift')
+            return ResponseData(serializer.data, status.HTTP_201_CREATED, 'Swift criada com sucesso')
+        
+
         serializer = SwiftSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()

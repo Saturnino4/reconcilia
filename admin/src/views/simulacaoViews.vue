@@ -53,8 +53,9 @@
                         
                         
                     </section>
-                    <form @submit.prevent class="flex gap c-black max-w-30" style="width: 22em;" v-if="1">
-                        <span  class="flex gap f_column s-between w-100 " style="padding: 1em;">
+                    <form @submit.prevent class="flex gap c-black " style="width: 100%" v-if="1">
+                       
+                        <span  class="flex gap f_column s-between  " style="padding: 1em;width: 22em">
                             
                             <span class="flex" >
                                 <input v-if="isNostro" class="ped w-100" style="color:#0009;padding:.2em .3em" type="text" value="BCN - Banco Cabo Verdeano de Negócios, S.A." disabled>
@@ -89,18 +90,34 @@
 
                             <span class="flex">
                                 <label class="flex gap" style="flex: .5;" for="defasamento_inp">Defasamento: </label>
-                                <input style="flex: .9" type="number" name="defasamento" id="defasamento_inp" :value="0" >
+                                <input style="flex: .5" type="number" name="defasamento" id="defasamento_inp" :value="0" >
                             </span>
 
                             <span>
                                 <button @click="submitForm" :disabled="noChanges" class="b_ped">Aplicar</button>
                             </span>
+
+                            <span>
+                                <!-- <P>No correspondent: {{  }}</P> -->
+                                <P>total - {{ nostro.length }}</P>
+                            </span>
                             
                           </span>
+
+                            <section class="infos" v-if="isNostro">
+                                <PieChart title="Resultado Nostro" :chartData="pieChartData" />
+                                <PieChart title="Resultado Vostro" :chartData="pieChartData" />
+                            </section>
+                        
                         </form>
+                       
                     <section v-if="1" class="table-wrap flex gap s-between">
                         <CustomTable v-if="1"  
+                        :tableData="nostro" />
+                        <CustomTable v-if="1"  
                         :tableData="extrato" :key="tableKey" />
+
+
                         <!-- <CustomTable  :tableData="registro_externo" /> -->
                         <CustomTable  :tableData="subContasByNumeroData" /> 
                     </section>
@@ -117,7 +134,7 @@
 </template>
 
 <script>
-     
+    import PieChart from '@/components/PieChart.vue'
     import ClienteForm from '@/components/clienteForm.vue';
     import popUp from '@/components/popUp.vue';
     import axios from 'axios';
@@ -132,6 +149,7 @@
             ClienteForm,
             popUp,
             CustomTable,
+            PieChart,
         },
 
         data() {
@@ -147,13 +165,29 @@
                     // data_inicio: '2024-10-10',
                     // data_fim: '2024-10-12',
                 },
+
+                pieChartData: {
+                    labels: ['Sucesso', 'Pendente'],
+                    datasets: [{
+                    // backgroundColor: ['#41B883', '#E46651', '#00D8FF'],
+                    backgroundColor: ['#ACD1AF', '#F47174'],
+                    data: [455, 54]
+                    }],
+
+                },
+
                 clientes: [],
                 contasData: [],
                 subContasData: [],
                 subContasByNumeroData: [],
                 bancosData: [],
                 propsData: {title: '', data: {}, action: '' },
+                
                 extrato: [],
+                noCorrespondidoVostra: [],
+                nostro: [],
+                noCorrespondidoNostra: [],
+                
                 registro_externo: [],
                 swift_data: [],
                 bank_choice: 'bank_2',
@@ -179,6 +213,7 @@
             getExtrato(){
                 this.extrato = fakeExtrato()
             },
+
 
             getToday() {
                 const today = new Date();
@@ -442,7 +477,8 @@
                 try {
                     let reconciliacao = await req.create(`reconciliacao/?nostro=${this.isNostro}`, finalFormData);
                     console.log("Reconciliacao do Fetch: ", reconciliacao);
-                    this.extrato = reconciliacao.data;
+                    this.extrato = reconciliacao.data?.extrato || []
+                    this.nostro = reconciliacao.data?.nostro || []
                     console.log('Extrato: => ',this.extrato);
                     
 
@@ -518,6 +554,12 @@
 
 <style scoped>
 
+    form{
+        width: 100%;
+        justify-content: space-between;
+        
+    }
+
     form input, form select{
         padding: .2em .3em;
         color: #0009;
@@ -541,5 +583,14 @@
         border: none;
         cursor: pointer;
     }
+
+
+    .infos {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 1rem;
+        width: 100%;
+      }
 
 </style>

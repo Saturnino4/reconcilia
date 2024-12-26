@@ -48,12 +48,12 @@
     <section class="table_section flex gap" style="flex: .5" >
       <CustomTable :noActions="1" :tableData="contasData" @returnData="returnData" />
       
-        <PopUp v-if="1" :propsData="{subContasByNumeroData, contaVostra}" />
-        <!-- <PopUp v-if="popupStatus.subcontas" :propsData="{subContasByNumeroData, contaVostra}" /> -->
+        <!-- <PopUp v-if="1" :propsData="{subContasByNumeroData, contaVostra}" /> -->
+        <PopUp v-if="popupStatus.subcontas" :propsData="{subContasByNumeroData, contaVostra}" @close="popupStatus.subcontas = false" />
 
       
       
-      <CustomTable :tableData="subContasByNumeroData" />
+      <!-- <CustomTable :tableData="subContasByNumeroData" /> -->
     </section>
   </section>
 </template>
@@ -136,7 +136,8 @@
     
     methods: {  
       returnData(data){
-        console.log(data);
+        // console.log(data);
+        this.propsData.data = data;
         this.data = data;
         this.action = 'editar';
 
